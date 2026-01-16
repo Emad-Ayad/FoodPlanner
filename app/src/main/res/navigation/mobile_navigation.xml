@@ -9,4 +9,9 @@
         android:name="com.example.foodplanner.HomeFragment"
         tools:layout="@layout/fragment_home" />
 
+    <fragment
+        android:id="@+id/categoriesFragment"
+        android:name="com.example.foodplanner.CategoryFragment"
+        tools:layout="@layout/fragment_category" />
+
 </navigation>
