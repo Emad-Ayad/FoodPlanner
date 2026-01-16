@@ -8,4 +8,7 @@
     <color name="light_orange">#FA8661</color>
     <color name="text_dark">#2B2B2B</color>
     <color name="text_hint">#B4B4B4</color>
+    <color name="gold">#FFBF00</color>
+    <color name="darkOverlay">#66000000</color>
+
 </resources>
