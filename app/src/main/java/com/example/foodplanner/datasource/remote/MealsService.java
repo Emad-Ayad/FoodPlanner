@@ -2,6 +2,7 @@ package com.example.foodplanner.datasource.remote;
 
 
 import com.example.foodplanner.model.CategoryListResponse;
+import com.example.foodplanner.model.MealsDetailsResponse;
 import com.example.foodplanner.model.MealsResponse;
 
 import retrofit2.Call;
@@ -22,7 +23,7 @@ public interface MealsService {
     Call<MealsResponse> getMealsByArea(@Query("a") String area);
 
     @GET("lookup.php")
-    Call<MealsResponse> getMealDetails(@Query("i") String idMeal);
+    Call<MealsDetailsResponse> getMealDetails(@Query("i") String idMeal);
 
     @GET("categories.php")
     Call<CategoryListResponse> getCategories();
