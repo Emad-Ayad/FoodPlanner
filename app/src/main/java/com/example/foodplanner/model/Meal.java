@@ -7,14 +7,11 @@ public class Meal {
     private int id ;
     @SerializedName("strMeal")
     private String name;
+
+    @SerializedName("strArea")
+    private String area;
     @SerializedName("strMealThumb")
     private String imageUrl;
-
-    public Meal(int id, String name, String imageUrl) {
-        this.id = id;
-        this.name = name;
-        this.imageUrl = imageUrl;
-    }
 
     public int getId() {
         return id;
@@ -32,11 +29,19 @@ public class Meal {
         this.name = name;
     }
 
-    public String getImage() {
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
+    }
+
+    public String getImageUrl() {
         return imageUrl;
     }
 
-    public void setImage(String imageUrl) {
+    public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
 }

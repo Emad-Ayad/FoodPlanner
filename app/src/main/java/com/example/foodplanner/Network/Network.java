@@ -7,16 +7,16 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Network {
 
-    public MealsService MealsService;
+    public MealsService mealsService;
     private static Network instance= null;
 
     private Network (){
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("www.themealdb.com/api/json/v1/1/")
+                .baseUrl("https://www.themealdb.com/api/json/v1/1/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-       MealsService =retrofit.create(MealsService.class);
+        mealsService =retrofit.create(MealsService.class);
     }
 
     public static Network getInstance(){
