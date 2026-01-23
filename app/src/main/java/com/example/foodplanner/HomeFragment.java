@@ -18,6 +18,7 @@ import com.bumptech.glide.Glide;
 import com.example.foodplanner.datasource.remote.MealsNetworkResponse;
 import com.example.foodplanner.datasource.remote.MealsRemoteDataSource;
 import com.example.foodplanner.model.Meal;
+import com.example.foodplanner.datasource.remote.*;
 
 import java.util.List;
 
@@ -26,6 +27,8 @@ public class HomeFragment extends Fragment {
     private ImageView mealImage;
     private TextView mealTitle, mealCountry;
     private MealsRemoteDataSource remoteDataSource;
+    private RecyclerView recyclerView;
+    private HomeAdapter adapter;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_home, container, false);
@@ -34,12 +37,39 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mealImage = view.findViewById(R.id.ivMealImage);
-        mealTitle = view.findViewById(R.id.tvMealTitle);
-        mealCountry = view.findViewById(R.id.tvMealCountry);
+        recyclerView = view.findViewById(R.id.rvMeals);
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
+
+        mealImage = view.findViewById(R.id.mealImage);
+        mealTitle = view.findViewById(R.id.mealTitle);
+        mealCountry = view.findViewById(R.id.mealCountry);
+
+        adapter = new HomeAdapter();
+        recyclerView.setAdapter(adapter);
 
         remoteDataSource = new MealsRemoteDataSource();
         loadMealOfTheDay();
+        loadMeals();
+
+    }
+
+    private void loadMeals(){
+        remoteDataSource.getMealsByArea("Egyptian",new MealsNetworkResponse() {
+            @Override
+            public void onSuccess(List<Meal> meals) {
+                adapter.updateMeals(meals);
+            }
+
+            @Override
+            public void onError(String message) {
+                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onInternetError(String message) {
+                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void loadMealOfTheDay() {
