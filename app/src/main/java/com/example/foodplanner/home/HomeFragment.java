@@ -1,4 +1,4 @@
-package com.example.foodplanner;
+package com.example.foodplanner.home;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,10 +15,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.foodplanner.R;
 import com.example.foodplanner.datasource.remote.MealsNetworkResponse;
 import com.example.foodplanner.datasource.remote.MealsRemoteDataSource;
 import com.example.foodplanner.model.Meal;
-import com.example.foodplanner.datasource.remote.*;
 
 import java.util.List;
 

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "867975195220",
+    "project_id": "foodplanner-83a0d",
+    "storage_bucket": "foodplanner-83a0d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:867975195220:android:c620fbcf9d6595bab95bc1",
+        "android_client_info": {
+          "package_name": "com.example.foodplanner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "867975195220-98rjsma0m8b9e8ggce36nrakjvem5jgj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.foodplanner",
+            "certificate_hash": "bf35599a9759fb8759a61ceccd414ceccd61540c"
+          }
+        },
+        {
+          "client_id": "867975195220-qnhje0freg6ka2ars5t1haarl62jphnu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBt0ftn5yOM12lq4xnkhHJBr6TWkpuAmlk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "867975195220-qnhje0freg6ka2ars5t1haarl62jphnu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
