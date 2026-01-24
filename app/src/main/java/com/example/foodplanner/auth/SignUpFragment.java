@@ -19,7 +19,7 @@ import android.widget.Toast;
 import com.example.foodplanner.firebase.*;
 import com.example.foodplanner.R;
 
-public class SignUpFragment extends Fragment {
+public class SignUpFragment extends Fragment { //TODO signUp with Google and Facebook
     EditText username, email, password, confirmPassword;
     Button signUpButton,googleBtn,facebookBtn;
     TextView login;
@@ -71,6 +71,8 @@ public class SignUpFragment extends Fragment {
                 }
             });
         });
+
+
 
         login.setOnClickListener(v->{
             NavHostFragment.findNavController(this)

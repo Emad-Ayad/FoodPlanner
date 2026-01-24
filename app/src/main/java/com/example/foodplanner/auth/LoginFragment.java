@@ -1,9 +1,14 @@
 package com.example.foodplanner.auth;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.credentials.GetCredentialRequest;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -18,15 +23,22 @@ import android.widget.Toast;
 
 import com.example.foodplanner.R;
 import com.example.foodplanner.firebase.*;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.libraries.identity.googleid.GetGoogleIdOption;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.GoogleAuthProvider;
 
 
-public class LoginFragment extends Fragment {
+public class LoginFragment extends Fragment {//TODO sign with Google and Facebook
 
     EditText email, password;
     Button loginBtn,googleBtn,facebookBtn,guestBtn;
     TextView signUp;
     AuthManger authManger;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,6 +58,7 @@ public class LoginFragment extends Fragment {
         guestBtn = view.findViewById(R.id.guestButton);
         signUp = view.findViewById(R.id.toSignUp);
         authManger = new AuthManger();
+
 
         loginBtn.setOnClickListener(v->{
             String emailValue= email.getText().toString();
@@ -73,7 +86,6 @@ public class LoginFragment extends Fragment {
             NavHostFragment.findNavController(this)
                     .navigate(R.id.action_loginFragment_to_signUpFragment);
         });
-
-
     }
+
 }
