@@ -1,4 +1,4 @@
-package com.example.foodplanner;
+package com.example.foodplanner.mealsbycategory.view;
 
 import android.os.Bundle;
 
@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,29 +15,28 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.foodplanner.datasource.remote.MealsNetworkResponse;
-import com.example.foodplanner.datasource.remote.MealsRemoteDataSource;
+import com.example.foodplanner.R;
+import com.example.foodplanner.mealsbycategory.presenter.MealsByCategoryPresenter;
+import com.example.foodplanner.mealsbycategory.presenter.MealsByCategoryPresenterImp;
 import com.example.foodplanner.model.Meal;
-
+import com.google.android.material.appbar.MaterialToolbar;
 import java.util.List;
 
-public class MealsByCategoryFragment extends Fragment implements MealsNetworkResponse {
+public class MealsByCategoryFragment extends Fragment implements MealsByCategoryView {
 
-    private static final String TAG = "MealsByCategoryFragment";
-    public static final String ARG_CATEGORY_NAME = "category_name";
 
     private RecyclerView rvMeals;
     private ProgressBar progressBar;
     private TextView categoryTitle;
     private MealsAdapter mealsAdapter;
     private String categoryName;
+    private MealsByCategoryPresenter presenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            categoryName = getArguments().getString(ARG_CATEGORY_NAME);
+            categoryName = getArguments().getString("category_name");
         }
     }
 
@@ -52,50 +50,28 @@ public class MealsByCategoryFragment extends Fragment implements MealsNetworkRes
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        initViews(view);
-        setupToolbar(view);
-        setupRecyclerView();
-        loadMealsByCategory();
-    }
-
-    private void initViews(View view) {
         rvMeals = view.findViewById(R.id.rvMeals);
         progressBar = view.findViewById(R.id.progressBar);
-        categoryTitle = view.findViewById(R.id.tvCategoryTitle);
+        categoryTitle = view.findViewById(R.id.categoryTitle);
+        categoryTitle.setText(categoryName);
 
-        if (categoryName != null) {
-            categoryTitle.setText(categoryName);
-        }
-    }
-
-    private void setupToolbar(View view) {
-        com.google.android.material.appbar.MaterialToolbar toolbar = view.findViewById(R.id.toolbar);
-        toolbar.setNavigationOnClickListener(v -> Navigation.findNavController(view).popBackStack());
-    }
-
-    private void setupRecyclerView() {
-        mealsAdapter = new MealsAdapter(meal -> {
-            // TODO: Navigate to meal details
-            Toast.makeText(getContext(), "Clicked: " + meal.getName(), Toast.LENGTH_SHORT).show();
+        MaterialToolbar toolbar = view.findViewById(R.id.toolbar); // TODO i just wanted to try something new (Future Me feel free to change)
+        toolbar.setNavigationOnClickListener(v ->{
+            Navigation.findNavController(view).popBackStack();
         });
 
         rvMeals.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        mealsAdapter = new MealsAdapter(this.getContext());
         rvMeals.setAdapter(mealsAdapter);
-    }
 
-    private void loadMealsByCategory() {
-        if (categoryName == null) {
-            return;
-        }
-
+        presenter = new MealsByCategoryPresenterImp(this);
         progressBar.setVisibility(View.VISIBLE);
-
-        MealsRemoteDataSource remoteDataSource = new MealsRemoteDataSource();
-        remoteDataSource.getMealsByCategory(categoryName, this);
+        presenter.getMealsByCategory(categoryName);
     }
+
 
     @Override
-    public void onSuccess(List<Meal> meals) {
+    public void showMeals(List<Meal> meals) {
         progressBar.setVisibility(View.GONE);
         if (meals != null && !meals.isEmpty()) {
             mealsAdapter.setMeals(meals);
@@ -105,14 +81,14 @@ public class MealsByCategoryFragment extends Fragment implements MealsNetworkRes
     }
 
     @Override
-    public void onError(String message) {
+    public void showError(String message) {
         progressBar.setVisibility(View.GONE);
-        Log.e(TAG, "Error: " + message);
+        Log.e("MealsByCategoryFragment", "Error: " + message);
         Toast.makeText(getContext(), "Error: " + message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void onInternetError(String message) {
+    public void showInternetError(String message) {
         progressBar.setVisibility(View.GONE);
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }

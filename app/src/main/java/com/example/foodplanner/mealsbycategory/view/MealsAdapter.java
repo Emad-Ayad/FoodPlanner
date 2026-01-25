@@ -1,32 +1,28 @@
-package com.example.foodplanner;
+package com.example.foodplanner.mealsbycategory.view;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
+import com.example.foodplanner.R;
 import com.example.foodplanner.model.Meal;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHolder> {
 
     private List<Meal> meals = new ArrayList<>();
-    private OnMealClickListener listener;
+    private Context context;
 
-    public interface OnMealClickListener {
-        void onMealClick(Meal meal);
+    public MealsAdapter(Context context) {
+        this.context = context;
     }
 
-    public MealsAdapter(OnMealClickListener listener) {
-        this.listener = listener;
-    }
 
     public void setMeals(List<Meal> meals) {
         this.meals = meals;
@@ -43,9 +39,11 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
 
     @Override
     public void onBindViewHolder(@NonNull MealViewHolder holder, int position) {
-        holder.itemView.setOnClickListener(v->{
+        holder.mealName.setText(meals.get(position).getName());
+        Glide.with(context).load(meals.get(position).getImageUrl()).into(holder.mealImage);
+
+        holder.itemView.setOnClickListener(v->{ // TODO nav to details ^_^ ربنا يوفقك
             Meal meal = meals.get(position);
-            listener.onMealClick(meal); //TODO nav to detials
         });
     }
 

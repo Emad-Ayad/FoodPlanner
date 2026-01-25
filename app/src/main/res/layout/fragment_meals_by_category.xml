@@ -18,7 +18,7 @@
         app:title="">
 
         <TextView
-            android:id="@+id/tvCategoryTitle"
+            android:id="@+id/categoryTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Category"

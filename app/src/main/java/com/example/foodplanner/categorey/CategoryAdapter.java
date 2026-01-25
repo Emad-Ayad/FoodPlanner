@@ -8,6 +8,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -17,7 +20,7 @@ import com.example.foodplanner.model.Category;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {//TODO
+public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {// TODO
 
     private List<Category> categories = new ArrayList<>();
     private final Context context;
@@ -45,8 +48,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         Glide.with(context).load(categories.get(position).getImageUrl()).into(holder.categoryImage);
 
         holder.itemView.setOnClickListener(view -> {
-            Category category=categories.get(position);
-            //TODO navigate
+            Category category = categories.get(position);
+            NavDirections action = CategoryFragmentDirections
+                    .actionCategoriesFragmentToMealsByCategoryFragment(category.getName());
+
+            Navigation.findNavController(view).navigate(action);
         });
     }
 
@@ -59,12 +65,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         private ImageView categoryImage;
         private TextView categoryName;
 
-
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
-            categoryImage=itemView.findViewById(R.id.categoryImage);
-            categoryName=itemView.findViewById(R.id.categoryName);
+            categoryImage = itemView.findViewById(R.id.categoryImage);
+            categoryName = itemView.findViewById(R.id.categoryName);
         }
     }
 }
-

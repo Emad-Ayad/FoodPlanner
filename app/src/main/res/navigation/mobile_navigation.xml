@@ -24,7 +24,7 @@
 
     <fragment
         android:id="@+id/mealsByCategoryFragment"
-        android:name="com.example.foodplanner.MealsByCategoryFragment"
+        android:name="com.example.foodplanner.mealsbycategory.view.MealsByCategoryFragment"
         tools:layout="@layout/fragment_meals_by_category">
         <argument
             android:name="category_name"
