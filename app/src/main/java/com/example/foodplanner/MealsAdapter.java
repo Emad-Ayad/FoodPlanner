@@ -66,20 +66,3 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
         }
     }
 }
-
-
-/*
-            itemView.setOnClickListener(v -> {
-int position = getAdapterPosition();
-                if (position != RecyclerView.NO_POSITION && listener != null) {
-        listener.onMealClick(meals.get(position));
-        }
-        });
-
-public void bind(Meal meal) {
-    mealName.setText(meal.getName());
-    Glide.with(itemView.getContext())
-            .load(meal.getImageUrl())
-            .placeholder(R.drawable.placeholder_food)
-            .into(mealImage);
-}*/

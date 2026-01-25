@@ -1,4 +1,4 @@
-package com.example.foodplanner.home;
+package com.example.foodplanner.home.view;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,11 +38,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MealViewHolder
         Meal meal = meals.get(position);
         holder.bind(meal);
 
-        /*holder.itemView.setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onMealClick(meal);
-            }
-        });*/
     }
 
     @Override
@@ -64,7 +59,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MealViewHolder
             mealName.setText(meal.getName());
 
             Glide.with(mealImage.getContext())
-                    .load(meal.getImageUrl())  // strMealThumb
+                    .load(meal.getImageUrl())
                     .centerCrop()
                     .placeholder(com.example.foodplanner.R.drawable.placeholder_food)
                     .into(mealImage);

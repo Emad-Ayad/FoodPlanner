@@ -1,4 +1,4 @@
-package com.example.foodplanner.home;
+package com.example.foodplanner.home.view;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,16 +19,19 @@ import com.example.foodplanner.R;
 import com.example.foodplanner.datasource.remote.MealsNetworkResponse;
 import com.example.foodplanner.datasource.remote.MealsRemoteDataSource;
 import com.example.foodplanner.model.Meal;
+import com.example.foodplanner.home.presenter.*;
 
 import java.util.List;
 
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements HomeView{
     private ImageView mealImage;
     private TextView mealTitle, mealCountry;
     private MealsRemoteDataSource remoteDataSource;
     private RecyclerView recyclerView;
     private HomeAdapter adapter;
+    private HomePresenter presenter;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_home, container, false);
@@ -46,60 +49,36 @@ public class HomeFragment extends Fragment {
 
         adapter = new HomeAdapter();
         recyclerView.setAdapter(adapter);
+        presenter = new HomePresenterImp(this);
 
         remoteDataSource = new MealsRemoteDataSource();
-        loadMealOfTheDay();
-        loadMeals();
+        presenter.getMealOfTheDay();
+        presenter.getQuickMeals();
 
     }
 
-    private void loadMeals(){
-        remoteDataSource.getMealsByArea("Egyptian",new MealsNetworkResponse() {
-            @Override
-            public void onSuccess(List<Meal> meals) {
-                adapter.updateMeals(meals);
-            }
-
-            @Override
-            public void onError(String message) {
-                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onInternetError(String message) {
-                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
-            }
-        });
+    @Override
+    public void showMealOfTheDay(Meal meal) {
+        mealTitle.setText(meal.getName());
+        mealCountry.setText(meal.getArea());
+        Glide.with(this)
+                .load(meal.getImageUrl())
+                .centerCrop()
+                .into(mealImage);
     }
 
-    private void loadMealOfTheDay() {
-        remoteDataSource.getMealOfTheDay(new MealsNetworkResponse() {
-            @Override
-            public void onSuccess(List<Meal> meals) {
-                if (meals == null || meals.isEmpty()) return;
-
-                Meal meal = meals.get(0);
-                mealTitle.setText(meal.getName());
-                mealCountry.setText(meal.getArea());
-
-                Glide.with(requireContext())
-                        .load(meal.getImageUrl())
-                        .centerCrop()
-                        .into(mealImage);
-            }
-
-            @Override
-            public void onError(String message) {
-                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onInternetError(String message) {
-                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
-            }
-        });
+    @Override
+    public void showQuickMeals(List<Meal> meals) {
+        adapter.updateMeals(meals);
     }
 
+    @Override
+    public void showError(String message) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
+    }
 
-
+    @Override
+    public void showInternetError(String message) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
+    }
 }
