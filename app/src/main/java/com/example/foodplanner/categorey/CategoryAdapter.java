@@ -1,4 +1,4 @@
-package com.example.foodplanner;
+package com.example.foodplanner.categorey;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,24 +11,18 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.foodplanner.R;
 import com.example.foodplanner.model.Category;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
+public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {//TODO
 
     private List<Category> categories = new ArrayList<>();
-    private OnCategoryClickListener listener;
     private final Context context;
 
-
-    public interface OnCategoryClickListener {
-        void onCategoryClick(Category category);
-    }
-
-    public CategoryAdapter(OnCategoryClickListener listener, Context context) {
-        this.listener = listener;
+    public CategoryAdapter(Context context) {
         this.context = context;
     }
 

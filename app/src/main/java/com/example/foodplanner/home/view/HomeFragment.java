@@ -16,8 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.foodplanner.R;
-import com.example.foodplanner.datasource.remote.MealsNetworkResponse;
-import com.example.foodplanner.datasource.remote.MealsRemoteDataSource;
 import com.example.foodplanner.model.Meal;
 import com.example.foodplanner.home.presenter.*;
 
@@ -27,7 +25,6 @@ import java.util.List;
 public class HomeFragment extends Fragment implements HomeView{
     private ImageView mealImage;
     private TextView mealTitle, mealCountry;
-    private MealsRemoteDataSource remoteDataSource;
     private RecyclerView recyclerView;
     private HomeAdapter adapter;
     private HomePresenter presenter;
@@ -51,7 +48,6 @@ public class HomeFragment extends Fragment implements HomeView{
         recyclerView.setAdapter(adapter);
         presenter = new HomePresenterImp(this);
 
-        remoteDataSource = new MealsRemoteDataSource();
         presenter.getMealOfTheDay();
         presenter.getQuickMeals();
 
