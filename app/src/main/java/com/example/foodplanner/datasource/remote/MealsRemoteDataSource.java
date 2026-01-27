@@ -8,6 +8,8 @@ import com.example.foodplanner.model.MealsResponse;
 
 import java.io.IOException;
 
+import com.example.foodplanner.model.CountriesResponse;
+import com.example.foodplanner.model.IngredientsResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -15,7 +17,7 @@ import retrofit2.Response;
 public class MealsRemoteDataSource {
     private MealsService mealsService;
 
-    public MealsRemoteDataSource(){
+    public MealsRemoteDataSource() {
         mealsService = Network.getInstance().mealsService;
     }
 
@@ -80,7 +82,45 @@ public class MealsRemoteDataSource {
         });
     }
 
+    public void getAreas(AreasNetworkResponse callback) {
+        mealsService.getAreas().enqueue(new Callback<CountriesResponse>() {
+            @Override
+            public void onResponse(Call<CountriesResponse> call, Response<CountriesResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body().getCountries());
+                }
+            }
 
+            @Override
+            public void onFailure(Call<CountriesResponse> call, Throwable t) {
+                if (t instanceof IOException) {
+                    callback.onInternetError("Network error");
+                } else {
+                    callback.onError(t.getMessage());
+                }
+            }
+        });
+    }
+
+    public void getIngredients(IngredientsNetworkResponse callback) {
+        mealsService.getIngredients().enqueue(new Callback<IngredientsResponse>() {
+            @Override
+            public void onResponse(Call<IngredientsResponse> call, Response<IngredientsResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body().getIngredients());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<IngredientsResponse> call, Throwable t) {
+                if (t instanceof IOException) {
+                    callback.onInternetError("Network error");
+                } else {
+                    callback.onError(t.getMessage());
+                }
+            }
+        });
+    }
 
     private Callback<MealsResponse> getMeals(MealsNetworkResponse callback) {
         return new Callback<MealsResponse>() {
@@ -102,4 +142,3 @@ public class MealsRemoteDataSource {
         };
     }
 }
-

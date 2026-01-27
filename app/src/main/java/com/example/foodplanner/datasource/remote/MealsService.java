@@ -1,9 +1,6 @@
 package com.example.foodplanner.datasource.remote;
 
-
-import com.example.foodplanner.model.CategoryListResponse;
-import com.example.foodplanner.model.MealsDetailsResponse;
-import com.example.foodplanner.model.MealsResponse;
+import com.example.foodplanner.model.*;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -27,6 +24,12 @@ public interface MealsService {
 
     @GET("categories.php")
     Call<CategoryListResponse> getCategories();
+
+    @GET("list.php?a=list")
+    Call<CountriesResponse> getAreas();
+
+    @GET("list.php?i=list")
+    Call<IngredientsResponse> getIngredients();
 
     @GET("search.php")
     Call<MealsResponse> searchMeals(@Query("s") String query);

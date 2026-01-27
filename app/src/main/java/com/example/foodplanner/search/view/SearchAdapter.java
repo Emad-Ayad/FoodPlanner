@@ -1,4 +1,4 @@
-package com.example.foodplanner.search;
+package com.example.foodplanner.search.view;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.foodplanner.R;
-import com.example.foodplanner.mealsbycategory.view.MealsAdapter;
 import com.example.foodplanner.model.Meal;
 
 import java.util.ArrayList;

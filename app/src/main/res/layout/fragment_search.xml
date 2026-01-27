@@ -4,8 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:paddingTop="36dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".search.SearchFragment">
+    android:fitsSystemWindows="true"
+    tools:context=".search.view.SearchFragment">
 
 
     <com.google.android.material.textfield.TextInputLayout
@@ -14,7 +16,7 @@
         android:layout_height="wrap_content"
         app:startIconDrawable="@drawable/ic_search"
         android:padding="24dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="24dp"
         app:boxCornerRadiusTopStart="8dp"
         app:boxCornerRadiusTopEnd="8dp"
         app:boxCornerRadiusBottomStart="8dp"
@@ -30,6 +32,53 @@
             android:inputType="textEmailAddress"
             android:paddingStart="48dp"/>
     </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroupSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:singleSelection="true"
+            app:selectionRequired="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Name"
+                android:checkable="true"
+                android:checked="true"
+                app:checkedIconEnabled="true"
+                style="@style/Widget.MaterialComponents.Chip.Choice"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Category"
+                android:checkable="true"
+                app:checkedIconEnabled="true"
+                style="@style/Widget.MaterialComponents.Chip.Choice"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipArea"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Country"
+                android:checkable="true"
+                app:checkedIconEnabled="true"
+                style="@style/Widget.MaterialComponents.Chip.Choice"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipIngredient"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ingredient"
+                android:checkable="true"
+                app:checkedIconEnabled="true"
+                style="@style/Widget.MaterialComponents.Chip.Choice"/>
+
+        </com.google.android.material.chip.ChipGroup>
 
     <FrameLayout
         android:layout_width="match_parent"
