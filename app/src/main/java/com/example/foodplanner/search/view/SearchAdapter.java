@@ -8,6 +8,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -44,8 +46,11 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         holder.mealName.setText(meals.get(position).getName());
         Glide.with(context).load(meals.get(position).getImageUrl()).into(holder.mealImage);
 
-        holder.itemView.setOnClickListener(v->{ // TODO nav  ^_^ ربنا يوفقك
+        holder.itemView.setOnClickListener(v->{
             Meal meal = meals.get(position);
+            NavDirections action = SearchFragmentDirections.actionSearchFragmentToDetailsFragment(meal.getId());
+
+            Navigation.findNavController(v).navigate(action);
         });
     }
 

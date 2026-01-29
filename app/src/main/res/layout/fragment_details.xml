@@ -5,6 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingTop="70dp"
+    android:paddingBottom="100dp"
     android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -52,7 +54,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
-            <TextView android:id="@+id/mealArea"
+            <TextView
+                android:id="@+id/mealArea"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -62,7 +65,8 @@
                 android:textSize="14sp"
                 tools:text="🇮🇹 Italian" />
 
-            <TextView android:id="@+id/mealCategory"
+            <TextView
+                android:id="@+id/mealCategory"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -72,7 +76,8 @@
                 tools:text="Main Course" />
         </LinearLayout>
 
-        <TextView android:id="@+id/ingredientsTitle"
+        <TextView
+            android:id="@+id/ingredientsTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
@@ -93,7 +98,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             tools:listitem="@layout/ingreadans_item" />
 
-        <TextView android:id="@+id/instructionsTitle"
+        <TextView
+            android:id="@+id/instructionsTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
@@ -103,7 +109,8 @@
             app:layout_constraintTop_toBottomOf="@id/rvIngredients"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <TextView android:id="@+id/instructionsText"
+        <TextView
+            android:id="@+id/instructionsText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
@@ -115,7 +122,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="make some staff bla bla bla " />
 
-        <TextView android:id="@+id/youtubeTitle"
+        <TextView
+            android:id="@+id/youtubeTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Recipe Video"

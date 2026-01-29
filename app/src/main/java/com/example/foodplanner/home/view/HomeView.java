@@ -7,6 +7,7 @@ import java.util.List;
 public interface HomeView {
     void showMealOfTheDay(Meal meal);
     void showQuickMeals(List<Meal> meals);
+    void navToMealDetails(String mealId);
     void showError(String message);
     void showInternetError(String message);
 }

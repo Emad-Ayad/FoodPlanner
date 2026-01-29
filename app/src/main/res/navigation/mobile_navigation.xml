@@ -14,6 +14,9 @@
         <action
             android:id="@+id/action_homeFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
     </fragment>
 
     <fragment
@@ -35,6 +38,9 @@
         <argument
             android:name="category_name"
             app:argType="string" />
+        <action
+            android:id="@+id/action_mealsByCategoryFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -47,6 +53,18 @@
         <action
             android:id="@+id/action_searchFragment_to_categoriesFragment"
             app:destination="@id/categoriesFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="com.example.foodplanner.details.DetailsFragment"
+        tools:layout="@layout/fragment_details" >
+        <argument
+            android:name="mealId"
+            app:argType="string" />
     </fragment>
 
 </navigation>

@@ -11,6 +11,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavDirections;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -48,8 +50,13 @@ public class HomeFragment extends Fragment implements HomeView{
         recyclerView.setAdapter(adapter);
         presenter = new HomePresenterImp(this);
 
+        mealImage.setOnClickListener(v->{
+            presenter.mealOnClickLinstener();
+        });
+
         presenter.getMealOfTheDay();
         presenter.getQuickMeals();
+
 
     }
 
@@ -61,11 +68,18 @@ public class HomeFragment extends Fragment implements HomeView{
                 .load(meal.getImageUrl())
                 .centerCrop()
                 .into(mealImage);
+
     }
 
     @Override
     public void showQuickMeals(List<Meal> meals) {
         adapter.updateMeals(meals);
+    }
+
+    @Override
+    public void navToMealDetails(String mealId) {
+        NavDirections action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(mealId);
+        NavHostFragment.findNavController(this).navigate(action);
     }
 
     @Override

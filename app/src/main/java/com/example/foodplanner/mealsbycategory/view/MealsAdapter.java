@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.foodplanner.R;
@@ -22,7 +24,6 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
     public MealsAdapter(Context context) {
         this.context = context;
     }
-
 
     public void setMeals(List<Meal> meals) {
         this.meals = meals;
@@ -42,9 +43,14 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
         holder.mealName.setText(meals.get(position).getName());
         Glide.with(context).load(meals.get(position).getImageUrl()).into(holder.mealImage);
 
-        holder.itemView.setOnClickListener(v->{ // TODO nav to details ^_^ ربنا يوفقك
+        holder.itemView.setOnClickListener(v -> {
             Meal meal = meals.get(position);
-        });
+            NavDirections action = MealsByCategoryFragmentDirections
+                    .actionMealsByCategoryFragmentToDetailsFragment(meal.getId());
+
+            Navigation.findNavController(v).navigate(action);
+
+            });
     }
 
     @Override

@@ -6,7 +6,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.foodplanner.mealsbycategory.view.*;
 import com.example.foodplanner.model.*;
 import com.example.foodplanner.R;
 
@@ -38,6 +42,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MealViewHolder
         Meal meal = meals.get(position);
         holder.bind(meal);
 
+        holder.itemView.setOnClickListener(v -> {
+            NavDirections action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(meal.getId());
+
+            Navigation.findNavController(v).navigate(action);
+
+        });
+
     }
 
     @Override
@@ -63,6 +74,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MealViewHolder
                     .centerCrop()
                     .placeholder(com.example.foodplanner.R.drawable.placeholder_food)
                     .into(mealImage);
+
+
+
         }
     }
 }

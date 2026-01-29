@@ -14,6 +14,8 @@ public class HomePresenterImp implements HomePresenter {
     private HomeView view;
     private MealsRemoteDataSource remoteDataSource = new MealsRemoteDataSource();
 
+    private Meal meal;
+
     public HomePresenterImp(HomeView view) {
         this.view = view;
     }
@@ -24,7 +26,8 @@ public class HomePresenterImp implements HomePresenter {
             @Override
             public void onSuccess(List<Meal> meals) {
                 if (view != null && meals != null && !meals.isEmpty()) {
-                    view.showMealOfTheDay(meals.get(0));
+                    meal = meals.get(0);
+                    view.showMealOfTheDay(meal);
                 }
             }
 
@@ -59,5 +62,10 @@ public class HomePresenterImp implements HomePresenter {
                     view.showInternetError(message);
             }
         });
+    }
+
+    @Override
+    public void mealOnClickLinstener() {
+        view.navToMealDetails(meal.getId());
     }
 }
