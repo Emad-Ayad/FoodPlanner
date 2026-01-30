@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.foodplanner.R;
 import com.example.foodplanner.data.model.Meal;
+import com.example.foodplanner.mealsbycategory.view.MealsAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +25,15 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
     private List<Meal> meals = new ArrayList<>();
     private Context context;
 
-    public SearchAdapter(Context context){
+    private OnPlanClickListener planListener;
+
+    public interface OnPlanClickListener {
+        void onPlanClick(Meal meal);
+    }
+
+    public SearchAdapter(Context context,OnPlanClickListener planListener){
         this.context=context;
+        this.planListener = planListener;
     }
 
     public void setMeals(List<Meal> meals) {
@@ -52,6 +60,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
 
             Navigation.findNavController(v).navigate(action);
         });
+
+        holder.addToPlanBtn.setOnClickListener(v -> {
+            if (planListener != null) {
+                planListener.onPlanClick(meals.get(position));
+            }
+        });
     }
 
     @Override
@@ -62,11 +76,13 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
     class SearchViewHolder extends RecyclerView.ViewHolder {
         private ImageView mealImage;
         private TextView mealName;
+        private ImageView addToPlanBtn;
 
         public SearchViewHolder(@NonNull View itemView) {
             super(itemView);
             mealImage = itemView.findViewById(R.id.mealImage);
             mealName = itemView.findViewById(R.id.mealName);
+            addToPlanBtn = itemView.findViewById(R.id.addToPlanBtn);
         }
     }
 

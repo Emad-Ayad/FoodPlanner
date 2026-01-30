@@ -1,5 +1,7 @@
 package com.example.foodplanner.search.presenter;
 
+import android.content.Context;
+
 import com.example.foodplanner.data.datasource.remote.AreasNetworkResponse;
 import com.example.foodplanner.data.datasource.remote.CategoriesNetworkResponse;
 import com.example.foodplanner.data.datasource.remote.IngredientsNetworkResponse;
@@ -9,19 +11,27 @@ import com.example.foodplanner.data.model.Category;
 import com.example.foodplanner.data.model.Country;
 import com.example.foodplanner.data.model.Ingredient;
 import com.example.foodplanner.data.model.Meal;
+import com.example.foodplanner.data.model.MealPlan;
+import com.example.foodplanner.data.repo.MealsRepo;
 import com.example.foodplanner.search.view.SearchedView;
 
 import java.util.List;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class SearchPresenterImp implements SearchPresenter {
 
     private MealsRemoteDataSource remoteDataSource;
 
     private SearchedView view;
+    private MealsRepo repo;
 
-    public SearchPresenterImp(SearchedView view) {
+
+    public SearchPresenterImp(SearchedView view, Context context) {
         this.view = view;
         this.remoteDataSource = new MealsRemoteDataSource();
+        this.repo = new MealsRepo(context);
     }
 
     @Override
@@ -162,5 +172,15 @@ public class SearchPresenterImp implements SearchPresenter {
                 view.showInternetError(message);
             }
         });
+    }
+
+    @Override
+    public void addToPlan(MealPlan plan) {
+        repo.insertMealPlan(plan)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        () -> {},
+                        error -> view.showError(error.getMessage()));
     }
 }

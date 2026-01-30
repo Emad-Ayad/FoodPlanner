@@ -1,5 +1,7 @@
 package com.example.foodplanner.search.presenter;
 
+import com.example.foodplanner.data.model.MealPlan;
+
 public interface SearchPresenter {
     void getSearchedMeals(String search);
 
@@ -14,4 +16,5 @@ public interface SearchPresenter {
     void getAreas();
 
     void getIngredients();
+    void addToPlan(MealPlan plan);
 }

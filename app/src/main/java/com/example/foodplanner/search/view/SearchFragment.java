@@ -1,5 +1,6 @@
 package com.example.foodplanner.search.view;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,6 +21,7 @@ import com.example.foodplanner.data.model.Category;
 import com.example.foodplanner.data.model.Country;
 import com.example.foodplanner.data.model.Ingredient;
 import com.example.foodplanner.data.model.Meal;
+import com.example.foodplanner.data.model.MealPlan;
 import com.example.foodplanner.data.model.SearchMode;
 import com.example.foodplanner.search.presenter.SearchPresenter;
 import com.example.foodplanner.search.presenter.SearchPresenterImp;
@@ -79,14 +81,17 @@ public class SearchFragment extends Fragment implements SearchedView,
 
         rvMeals.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
-        adapter = new SearchAdapter(this.getContext());
+        adapter = new SearchAdapter(this.getContext(), meal -> {
+            showDayPickerDialog(meal);
+        });
+
         areasAdapter = new AreasAdapter(this);
         ingredientsAdapter = new IngredientsAdapter(this);
         categoryAdapter = new SearchCategoryAdapter(this.getContext(), this);
 
         rvMeals.setAdapter(adapter);
 
-        presenter = new SearchPresenterImp(this);
+        presenter = new SearchPresenterImp(this,getContext());
         progressBar.setVisibility(View.GONE);
 
         searchText.addTextChangedListener(new TextWatcher() {
@@ -154,6 +159,23 @@ public class SearchFragment extends Fragment implements SearchedView,
         });
 
         setupChipListeners();
+    }
+
+    private void showDayPickerDialog(Meal meal) {
+        String[] week = { "Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" };
+        new AlertDialog.Builder(getContext())
+                .setTitle("Choose a day")
+                .setItems(week, (dialog, day) -> {
+                    MealPlan plan = new MealPlan(
+                            meal.getId(),
+                            week[day],
+                            meal.getName(),
+                            meal.getImageUrl(),
+                            meal.getArea(),
+                            "category");
+                    presenter.addToPlan(plan);
+                    Toast.makeText(getContext(), "Added to plan " , Toast.LENGTH_SHORT).show();
+                }).show();
     }
 
     private void setupChipListeners() {
