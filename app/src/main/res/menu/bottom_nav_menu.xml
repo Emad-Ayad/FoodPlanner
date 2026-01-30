@@ -15,7 +15,7 @@
         android:icon="@drawable/ic_search"
         android:title="Search" />
     <item
-        android:id="@+id/nav_plan"
+        android:id="@+id/plannerFragment"
         android:icon="@drawable/ic_calendar"
         android:title="Plan" />
     <item

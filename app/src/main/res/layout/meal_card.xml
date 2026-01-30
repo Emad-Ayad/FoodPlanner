@@ -31,12 +31,23 @@
             android:layout_height="wrap_content"
             android:text="Delicious Chicken Pasta"
             android:textColor="@android:color/white"
-            android:layout_margin="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginStart="20dp"
             android:layout_gravity="bottom|start"
             android:textSize="18sp"
             android:textStyle="bold"
             android:maxLines="1"
             android:ellipsize="end" />
+
+        <ImageView
+            android:id="@+id/addToPlanBtn"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center|end"
+            android:layout_margin="12dp"
+            android:src="@drawable/add"
+            app:tint="@color/white"
+            />
 
     </FrameLayout>
 

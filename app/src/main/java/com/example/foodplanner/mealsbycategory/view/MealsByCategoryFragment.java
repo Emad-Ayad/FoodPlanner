@@ -1,5 +1,6 @@
 package com.example.foodplanner.mealsbycategory.view;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,11 +20,11 @@ import com.example.foodplanner.R;
 import com.example.foodplanner.mealsbycategory.presenter.MealsByCategoryPresenter;
 import com.example.foodplanner.mealsbycategory.presenter.MealsByCategoryPresenterImp;
 import com.example.foodplanner.data.model.Meal;
+import com.example.foodplanner.data.model.MealPlan;
 import com.google.android.material.appbar.MaterialToolbar;
 import java.util.List;
 
 public class MealsByCategoryFragment extends Fragment implements MealsByCategoryView {
-
 
     private RecyclerView rvMeals;
     private ProgressBar progressBar;
@@ -56,19 +57,39 @@ public class MealsByCategoryFragment extends Fragment implements MealsByCategory
         categoryTitle.setText(categoryName);
 
         MaterialToolbar toolbar = view.findViewById(R.id.toolbar); // TODO i just wanted to try something new (Future Me feel free to change)
-        toolbar.setNavigationOnClickListener(v ->{
+        toolbar.setNavigationOnClickListener(v -> {
             Navigation.findNavController(view).popBackStack();
         });
 
         rvMeals.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        mealsAdapter = new MealsAdapter(this.getContext());
+        if (getContext() != null) {
+            mealsAdapter = new MealsAdapter(this.getContext(), meal -> {
+                showDayPickerDialog(meal);
+            });
+        }
         rvMeals.setAdapter(mealsAdapter);
 
-        presenter = new MealsByCategoryPresenterImp(this);
+        presenter = new MealsByCategoryPresenterImp(this, getContext());
         progressBar.setVisibility(View.VISIBLE);
         presenter.getMealsByCategory(categoryName);
     }
 
+    private void showDayPickerDialog(Meal meal) {
+        String[] week = { "Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" };
+        new AlertDialog.Builder(getContext())
+                .setTitle("Choose a day")
+                .setItems(week, (dialog, day) -> {
+                   MealPlan plan = new MealPlan(
+                            meal.getId(),
+                            week[day],
+                            meal.getName(),
+                            meal.getImageUrl(),
+                            meal.getArea(),
+                            categoryName);
+                    presenter.addToPlan(plan);
+                    Toast.makeText(getContext(), "Added to plan " , Toast.LENGTH_SHORT).show();
+                }).show();
+    }
 
     @Override
     public void showMeals(List<Meal> meals) {

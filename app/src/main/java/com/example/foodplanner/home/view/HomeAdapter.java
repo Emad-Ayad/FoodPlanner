@@ -13,12 +13,26 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.foodplanner.data.model.Meal;
 import com.example.foodplanner.R;
 import com.bumptech.glide.Glide;
+import com.example.foodplanner.mealsbycategory.view.MealsAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MealViewHolder> {
 
     private List<Meal> meals = new ArrayList<>();
+
+    private OnPlanClickListener planListener;
+
+    public interface OnPlanClickListener {
+        void onPlanClick(Meal meal);
+    }
+
+    HomeAdapter(OnPlanClickListener listener) {
+        this.planListener = listener;
+    }
+
+
 
     public void updateMeals(List<Meal> newMeals) {
         this.meals.clear();
@@ -45,6 +59,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MealViewHolder
 
         });
 
+        holder.addToPlanBtn.setOnClickListener(v -> {
+            if (planListener != null) {
+                planListener.onPlanClick(meals.get(position));
+            }
+        });
+
     }
 
     @Override
@@ -55,6 +75,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MealViewHolder
     class MealViewHolder extends RecyclerView.ViewHolder {
         ImageView mealImage;
         TextView mealName;
+        ImageView addToPlanBtn;
+
 
         public MealViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -64,11 +86,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MealViewHolder
 
         public void bind(Meal meal) {
             mealName.setText(meal.getName());
+            addToPlanBtn = itemView.findViewById(R.id.addToPlanBtn);
+
 
             Glide.with(mealImage.getContext())
                     .load(meal.getImageUrl())
                     .centerCrop()
-                    .placeholder(com.example.foodplanner.R.drawable.placeholder_food)
+                    .placeholder(R.drawable.placeholder_food)
                     .into(mealImage);
 
 

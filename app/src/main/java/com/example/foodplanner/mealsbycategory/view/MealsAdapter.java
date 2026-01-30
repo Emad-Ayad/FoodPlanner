@@ -21,9 +21,17 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
     private List<Meal> meals = new ArrayList<>();
     private Context context;
 
-    public MealsAdapter(Context context) {
-        this.context = context;
+    private OnPlanClickListener planListener;
+
+    public interface OnPlanClickListener {
+        void onPlanClick(Meal meal);
     }
+
+    public MealsAdapter(Context context, OnPlanClickListener planListener) {
+        this.context = context;
+        this.planListener = planListener;
+    }
+
 
     public void setMeals(List<Meal> meals) {
         this.meals = meals;
@@ -47,10 +55,14 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
             Meal meal = meals.get(position);
             NavDirections action = MealsByCategoryFragmentDirections
                     .actionMealsByCategoryFragmentToDetailsFragment(meal.getId());
-
             Navigation.findNavController(v).navigate(action);
+        });
 
-            });
+        holder.addToPlanBtn.setOnClickListener(v -> {
+            if (planListener != null) {
+                planListener.onPlanClick(meals.get(position));
+            }
+        });
     }
 
     @Override
@@ -61,12 +73,13 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
     class MealViewHolder extends RecyclerView.ViewHolder {
         private ImageView mealImage;
         private TextView mealName;
+        private ImageView addToPlanBtn;
 
         public MealViewHolder(@NonNull View itemView) {
             super(itemView);
             mealImage = itemView.findViewById(R.id.mealImage);
             mealName = itemView.findViewById(R.id.mealName);
-
+            addToPlanBtn = itemView.findViewById(R.id.addToPlanBtn);
         }
     }
 }

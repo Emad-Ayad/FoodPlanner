@@ -1,5 +1,6 @@
 package com.example.foodplanner.home.view;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.foodplanner.R;
 import com.example.foodplanner.data.model.Meal;
+import com.example.foodplanner.data.model.MealPlan;
 import com.example.foodplanner.home.presenter.*;
 
 import java.util.List;
@@ -46,18 +48,39 @@ public class HomeFragment extends Fragment implements HomeView{
         mealTitle = view.findViewById(R.id.mealTitle);
         mealCountry = view.findViewById(R.id.mealCountry);
 
-        adapter = new HomeAdapter();
+        adapter = new HomeAdapter(meal -> {
+            showDayPickerDialog(meal);
+        });
         recyclerView.setAdapter(adapter);
-        presenter = new HomePresenterImp(this);
+        presenter = new HomePresenterImp(this,getContext());
 
         mealImage.setOnClickListener(v->{
             presenter.mealOnClickLinstener();
         });
 
+
         presenter.getMealOfTheDay();
         presenter.getQuickMeals();
 
 
+    }
+
+    private void showDayPickerDialog(Meal meal) {
+        String[] week = { "Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" };
+        new AlertDialog.Builder(getContext())
+                .setTitle("Choose a day")
+                .setItems(week, (dialog, day) -> {
+                    MealPlan plan = new MealPlan(
+                            meal.getId(),
+                            week[day],
+                            meal.getName(),
+                            meal.getImageUrl(),
+                            meal.getArea(),
+                            "category" //TODO mybe adjust the model how did i forget ?!
+                            );
+                    presenter.addToPlan(plan);
+                    Toast.makeText(getContext(), "Added to plan " , Toast.LENGTH_SHORT).show();
+                }).show();
     }
 
     @Override
@@ -80,6 +103,11 @@ public class HomeFragment extends Fragment implements HomeView{
     public void navToMealDetails(String mealId) {
         NavDirections action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(mealId);
         NavHostFragment.findNavController(this).navigate(action);
+    }
+
+    @Override
+    public void addToPlan(MealPlan plan) {
+
     }
 
     @Override

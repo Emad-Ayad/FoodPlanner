@@ -15,7 +15,6 @@ public class DetailsPresenterImp implements DetailsPresenter   {
         this.remoteDataSource = new MealsRemoteDataSource();
     }
 
-
     public void getMealDetails(String mealId) {
         remoteDataSource.getMealDetails(mealId, new MealDetailNetworkResponse() {
             @Override
