@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodplanner.details.presenter.DetailsPresenter;
@@ -19,6 +20,7 @@ import com.example.foodplanner.details.presenter.DetailsPresenterImp;
 import com.bumptech.glide.Glide;
 import com.example.foodplanner.R;
 import com.example.foodplanner.data.model.MealDetail;
+import com.example.foodplanner.data.model.Meal;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
@@ -33,7 +35,11 @@ public class DetailsFragment extends Fragment implements DetailsView {
     private TextView mealName,mealArea,mealCategory,instructionsText;
 
     private YouTubePlayerView youtubePlayerView;
+    private IngredientsAdapter ingredientsAdapter;
     private RecyclerView rvIngredients;
+    private ImageView addToFavBtn;
+    private boolean isFav = false;
+    private Meal currentMeal;
 
 
     @Override
@@ -48,7 +54,7 @@ public class DetailsFragment extends Fragment implements DetailsView {
         super.onViewCreated(view, savedInstanceState);
 
         initViews(view);
-        presenter = new DetailsPresenterImp(this);
+        presenter = new DetailsPresenterImp(this,getContext());
 
         String mealId = null;
         if (getArguments() != null) {
@@ -70,12 +76,15 @@ public class DetailsFragment extends Fragment implements DetailsView {
         instructionsText = view.findViewById(R.id.instructionsText);
         youtubePlayerView = view.findViewById(R.id.youtubePlayer);
         rvIngredients = view.findViewById(R.id.rvIngredients);
-
+        addToFavBtn = view.findViewById(R.id.addToFavBtn);
+        rvIngredients.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+        ingredientsAdapter = new IngredientsAdapter(getContext());
+        rvIngredients.setAdapter(ingredientsAdapter);
         getLifecycle().addObserver(youtubePlayerView);
     }
 
     @Override
-    public void showMealDetails(MealDetail meal) { //TODO didnt handle the ing yet
+    public void showMealDetails(MealDetail meal) {
         mealName.setText(meal.getName());
         mealArea.setText(meal.getCountry());
         mealCategory.setText(meal.getCategory());
@@ -84,8 +93,42 @@ public class DetailsFragment extends Fragment implements DetailsView {
         Glide.with(this).load(meal.getImageUrl()).into(mealImage);
 
         loadVideo(meal.getYoutubeUrl());
+        ingredientsAdapter.setIngredients(meal.getIngredients());
 
+        currentMeal = new Meal(
+                meal.getId(),
+                meal.getName(),
+                meal.getCountry(),
+                meal.getImageUrl()
+        );
 
+        addToFavBtn.setOnClickListener(v -> {
+            if (isFav) {
+                presenter.removeFromFav(currentMeal);
+            } else {
+                presenter.addToFav(currentMeal);
+            }
+        });
+    }
+
+    @Override
+    public void showFavAdded() {
+        isFav = true;
+        addToFavBtn.setImageResource(R.drawable.baseline_favorite_24);
+    }
+
+    @Override
+    public void showFavRemoved() {
+        isFav = false;
+        addToFavBtn.setImageResource(R.drawable.baseline_favorite_border_24);
+    }
+
+    @Override
+    public void updateFavState(boolean isFav) {
+        this.isFav = isFav;
+        addToFavBtn.setImageResource(
+                isFav ? R.drawable.baseline_favorite_24 : R.drawable.baseline_favorite_border_24
+        );
     }
 
     private void loadVideo(String youtubeUrl) {

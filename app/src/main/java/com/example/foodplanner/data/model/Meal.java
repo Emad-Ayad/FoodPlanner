@@ -24,6 +24,13 @@ public class Meal {
     @ColumnInfo(name = "imageUrl")
     private String imageUrl;
 
+    public Meal(@NonNull String id, String name, String area, String imageUrl) {
+        this.id = id;
+        this.name = name;
+        this.area = area;
+        this.imageUrl = imageUrl;
+    }
+
     public String getId() {
         return id;
     }

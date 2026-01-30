@@ -32,6 +32,16 @@
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
                     tools:src="@drawable/placeholder_food" />
+
+                <ImageView
+                    android:id="@+id/addToFavBtn"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:layout_gravity="top|end"
+                    android:layout_margin="12dp"
+                    android:src="@drawable/baseline_favorite_24"
+                    app:tint="@color/white"
+                    />
             </com.google.android.material.card.MaterialCardView>
 
             <TextView
@@ -147,15 +157,5 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabAddToPlan"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_calendar"
-        app:tint="@color/white"
-        android:contentDescription="Add to Plan" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
