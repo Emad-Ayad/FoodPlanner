@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.foodplanner.R;
 import com.example.foodplanner.data.model.Meal;
+import com.example.foodplanner.home.view.HomeAdapter;
 import com.example.foodplanner.mealsbycategory.view.MealsAdapter;
 
 import java.util.ArrayList;
@@ -26,14 +27,20 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
     private Context context;
 
     private OnPlanClickListener planListener;
+    private OnFavClickListener favListener;
+
 
     public interface OnPlanClickListener {
         void onPlanClick(Meal meal);
     }
+    public interface OnFavClickListener {
+        void onFavClick(Meal meal);
+    }
 
-    public SearchAdapter(Context context,OnPlanClickListener planListener){
+    public SearchAdapter(Context context,OnPlanClickListener planListener,OnFavClickListener favListener){
         this.context=context;
         this.planListener = planListener;
+        this.favListener = favListener;
     }
 
     public void setMeals(List<Meal> meals) {
@@ -66,6 +73,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
                 planListener.onPlanClick(meals.get(position));
             }
         });
+
+        holder.addToFavBtn.setOnClickListener(v->{
+            if (favListener != null) {
+                favListener.onFavClick(meals.get(position));
+            }
+        });
     }
 
     @Override
@@ -77,12 +90,15 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         private ImageView mealImage;
         private TextView mealName;
         private ImageView addToPlanBtn;
+        private ImageView addToFavBtn;
+
 
         public SearchViewHolder(@NonNull View itemView) {
             super(itemView);
             mealImage = itemView.findViewById(R.id.mealImage);
             mealName = itemView.findViewById(R.id.mealName);
             addToPlanBtn = itemView.findViewById(R.id.addToPlanBtn);
+            addToFavBtn = itemView.findViewById(R.id.addToFavBtn);
         }
     }
 

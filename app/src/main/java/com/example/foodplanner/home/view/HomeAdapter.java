@@ -23,13 +23,19 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MealViewHolder
     private List<Meal> meals = new ArrayList<>();
 
     private OnPlanClickListener planListener;
+    private OnFavClickListener favListener;
 
     public interface OnPlanClickListener {
         void onPlanClick(Meal meal);
     }
 
-    HomeAdapter(OnPlanClickListener listener) {
+    public interface OnFavClickListener {
+        void onFavClick(Meal meal);
+    }
+
+    HomeAdapter(OnPlanClickListener listener, OnFavClickListener favListener) {
         this.planListener = listener;
+        this.favListener = favListener;
     }
 
 
@@ -65,6 +71,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MealViewHolder
             }
         });
 
+        holder.addToFavBtn.setOnClickListener(v->{
+            if (favListener != null) {
+                favListener.onFavClick(meals.get(position));
+            }
+        });
+
     }
 
     @Override
@@ -76,6 +88,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MealViewHolder
         ImageView mealImage;
         TextView mealName;
         ImageView addToPlanBtn;
+        ImageView addToFavBtn;
 
 
         public MealViewHolder(@NonNull View itemView) {
@@ -87,6 +100,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MealViewHolder
         public void bind(Meal meal) {
             mealName.setText(meal.getName());
             addToPlanBtn = itemView.findViewById(R.id.addToPlanBtn);
+            addToFavBtn = itemView.findViewById(R.id.addToFavBtn);
 
 
             Glide.with(mealImage.getContext())

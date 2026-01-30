@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.foodplanner.R;
 import com.example.foodplanner.data.model.Meal;
+import com.example.foodplanner.home.view.HomeAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,14 +24,20 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
     private Context context;
 
     private OnPlanClickListener planListener;
+    private HomeAdapter.OnFavClickListener favListener;
+
 
     public interface OnPlanClickListener {
         void onPlanClick(Meal meal);
     }
+    public interface OnFavClickListener {
+        void onFavClick(Meal meal);
+    }
 
-    public MealsAdapter(Context context, OnPlanClickListener planListener) {
+    public MealsAdapter(Context context, OnPlanClickListener planListener, HomeAdapter.OnFavClickListener favListener) {
         this.context = context;
         this.planListener = planListener;
+        this.favListener = favListener;
     }
 
 
@@ -63,6 +71,12 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
                 planListener.onPlanClick(meals.get(position));
             }
         });
+
+        holder.addToFavBtn.setOnClickListener(v->{
+            if (favListener != null) {
+                favListener.onFavClick(meals.get(position));
+            }
+        });
     }
 
     @Override
@@ -74,12 +88,14 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
         private ImageView mealImage;
         private TextView mealName;
         private ImageView addToPlanBtn;
+        private ImageView addToFavBtn;
 
         public MealViewHolder(@NonNull View itemView) {
             super(itemView);
             mealImage = itemView.findViewById(R.id.mealImage);
             mealName = itemView.findViewById(R.id.mealName);
             addToPlanBtn = itemView.findViewById(R.id.addToPlanBtn);
+            addToFavBtn = itemView.findViewById(R.id.addToFavBtn);
         }
     }
 }

@@ -36,6 +36,16 @@ public class MealsByCategoryPresenterImp implements MealsByCategoryPresenter {
     }
 
     @Override
+    public void addToFav(Meal meal) {
+        repo.insertFavMeal(meal)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        () -> {},
+                        error -> view.showError(error.getMessage()));
+    }
+
+    @Override
     public void getMealsByCategory(String category) {
         remoteDataSource.getMealsByCategory(category, new MealsNetworkResponse() {
             @Override

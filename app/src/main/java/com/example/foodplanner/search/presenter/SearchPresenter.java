@@ -1,5 +1,6 @@
 package com.example.foodplanner.search.presenter;
 
+import com.example.foodplanner.data.model.Meal;
 import com.example.foodplanner.data.model.MealPlan;
 
 public interface SearchPresenter {
@@ -17,4 +18,6 @@ public interface SearchPresenter {
 
     void getIngredients();
     void addToPlan(MealPlan plan);
+    void addToFav(Meal meal);
+
 }

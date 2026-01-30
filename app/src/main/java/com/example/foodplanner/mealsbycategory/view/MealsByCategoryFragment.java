@@ -65,6 +65,10 @@ public class MealsByCategoryFragment extends Fragment implements MealsByCategory
         if (getContext() != null) {
             mealsAdapter = new MealsAdapter(this.getContext(), meal -> {
                 showDayPickerDialog(meal);
+            },meal -> {
+                presenter.addToFav(meal);
+                Toast.makeText(getContext(), "Added to Fav " , Toast.LENGTH_SHORT).show();
+
             });
         }
         rvMeals.setAdapter(mealsAdapter);

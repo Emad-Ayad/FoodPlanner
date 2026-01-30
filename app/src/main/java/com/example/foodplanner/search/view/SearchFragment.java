@@ -83,6 +83,10 @@ public class SearchFragment extends Fragment implements SearchedView,
 
         adapter = new SearchAdapter(this.getContext(), meal -> {
             showDayPickerDialog(meal);
+        },meal -> {
+            presenter.addToFav(meal);
+            Toast.makeText(getContext(), "Added to Fav " , Toast.LENGTH_SHORT).show();
+
         });
 
         areasAdapter = new AreasAdapter(this);

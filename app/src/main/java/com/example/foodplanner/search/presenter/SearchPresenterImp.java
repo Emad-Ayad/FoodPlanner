@@ -183,4 +183,14 @@ public class SearchPresenterImp implements SearchPresenter {
                         () -> {},
                         error -> view.showError(error.getMessage()));
     }
+
+    @Override
+    public void addToFav(Meal meal) {
+        repo.insertFavMeal(meal)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        () -> {},
+                        error -> view.showError(error.getMessage()));
+    }
 }

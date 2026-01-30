@@ -50,6 +50,10 @@ public class HomeFragment extends Fragment implements HomeView{
 
         adapter = new HomeAdapter(meal -> {
             showDayPickerDialog(meal);
+        }, meal -> {
+            presenter.addToFav(meal);
+            Toast.makeText(getContext(), "Added to Fav " , Toast.LENGTH_SHORT).show();
+
         });
         recyclerView.setAdapter(adapter);
         presenter = new HomePresenterImp(this,getContext());
@@ -103,11 +107,6 @@ public class HomeFragment extends Fragment implements HomeView{
     public void navToMealDetails(String mealId) {
         NavDirections action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(mealId);
         NavHostFragment.findNavController(this).navigate(action);
-    }
-
-    @Override
-    public void addToPlan(MealPlan plan) {
-
     }
 
     @Override

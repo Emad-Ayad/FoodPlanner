@@ -51,11 +51,6 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
         holder.tvName.setText(meal.getName());
         Glide.with(context).load(meal.getImageUrl()).placeholder(R.drawable.ic_launcher_background).into(holder.ivMeal);
 
-        holder.itemView.setOnClickListener(v -> {
-            androidx.navigation.NavDirections action = FavoriteFragmentDirections
-                    .actionFavoriteFragmentToDetailsFragment(meal.getId());
-            androidx.navigation.Navigation.findNavController(v).navigate(action);
-        });
 
         holder.btnDelete.setOnClickListener(v -> {
             if (listener != null) {
