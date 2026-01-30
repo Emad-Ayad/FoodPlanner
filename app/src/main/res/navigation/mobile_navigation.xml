@@ -71,5 +71,10 @@
         android:name="com.example.foodplanner.planer.PlannerFragment"
         android:label="fragment_planner"
         tools:layout="@layout/fragment_planner" />
+    <fragment
+        android:id="@+id/favoriteFragment"
+        android:name="com.example.foodplanner.favorite.view.FavoriteFragment"
+        android:label="fragment_favorite"
+        tools:layout="@layout/fragment_favorite" />
 
 </navigation>
