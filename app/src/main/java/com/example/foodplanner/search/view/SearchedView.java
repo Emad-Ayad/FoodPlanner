@@ -1,9 +1,9 @@
 package com.example.foodplanner.search.view;
 
-import com.example.foodplanner.model.Category;
-import com.example.foodplanner.model.Country;
-import com.example.foodplanner.model.Ingredient;
-import com.example.foodplanner.model.Meal;
+import com.example.foodplanner.data.model.Category;
+import com.example.foodplanner.data.model.Country;
+import com.example.foodplanner.data.model.Ingredient;
+import com.example.foodplanner.data.model.Meal;
 
 import java.util.List;
 

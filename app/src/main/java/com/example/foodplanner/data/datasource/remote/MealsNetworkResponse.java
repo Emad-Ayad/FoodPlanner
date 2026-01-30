@@ -1,6 +1,6 @@
-package com.example.foodplanner.datasource.remote;
+package com.example.foodplanner.data.datasource.remote;
 
-import com.example.foodplanner.model.Meal;
+import com.example.foodplanner.data.model.Meal;
 
 import java.util.List;
 

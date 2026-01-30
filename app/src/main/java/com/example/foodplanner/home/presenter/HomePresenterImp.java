@@ -1,12 +1,9 @@
 package com.example.foodplanner.home.presenter;
 
-import android.widget.Toast;
-
-import com.bumptech.glide.Glide;
-import com.example.foodplanner.datasource.remote.MealsNetworkResponse;
-import com.example.foodplanner.datasource.remote.MealsRemoteDataSource;
+import com.example.foodplanner.data.datasource.remote.MealsNetworkResponse;
+import com.example.foodplanner.data.datasource.remote.MealsRemoteDataSource;
 import com.example.foodplanner.home.view.*;
-import com.example.foodplanner.model.Meal;
+import com.example.foodplanner.data.model.Meal;
 
 import java.util.List;
 

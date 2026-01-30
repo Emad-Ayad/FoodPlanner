@@ -1,14 +1,14 @@
 package com.example.foodplanner.search.presenter;
 
-import com.example.foodplanner.datasource.remote.AreasNetworkResponse;
-import com.example.foodplanner.datasource.remote.CategoriesNetworkResponse;
-import com.example.foodplanner.datasource.remote.IngredientsNetworkResponse;
-import com.example.foodplanner.datasource.remote.MealsNetworkResponse;
-import com.example.foodplanner.datasource.remote.MealsRemoteDataSource;
-import com.example.foodplanner.model.Category;
-import com.example.foodplanner.model.Country;
-import com.example.foodplanner.model.Ingredient;
-import com.example.foodplanner.model.Meal;
+import com.example.foodplanner.data.datasource.remote.AreasNetworkResponse;
+import com.example.foodplanner.data.datasource.remote.CategoriesNetworkResponse;
+import com.example.foodplanner.data.datasource.remote.IngredientsNetworkResponse;
+import com.example.foodplanner.data.datasource.remote.MealsNetworkResponse;
+import com.example.foodplanner.data.datasource.remote.MealsRemoteDataSource;
+import com.example.foodplanner.data.model.Category;
+import com.example.foodplanner.data.model.Country;
+import com.example.foodplanner.data.model.Ingredient;
+import com.example.foodplanner.data.model.Meal;
 import com.example.foodplanner.search.view.SearchedView;
 
 import java.util.List;

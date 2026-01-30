@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.foodplanner.R;
-import com.example.foodplanner.model.Meal;
+import com.example.foodplanner.data.model.Meal;
 import com.example.foodplanner.home.presenter.*;
 
 import java.util.List;
@@ -61,10 +61,10 @@ public class HomeFragment extends Fragment implements HomeView{
     }
 
     @Override
-    public void showMealOfTheDay(Meal meal) {
+    public void showMealOfTheDay(Meal meal) { //TODO if i had time move this fun from here
         mealTitle.setText(meal.getName());
         mealCountry.setText(meal.getArea());
-        Glide.with(this)
+        Glide.with(mealImage)
                 .load(meal.getImageUrl())
                 .centerCrop()
                 .into(mealImage);

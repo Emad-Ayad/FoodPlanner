@@ -1,9 +1,9 @@
 package com.example.foodplanner.mealsbycategory.presenter;
 
-import com.example.foodplanner.datasource.remote.MealsNetworkResponse;
-import com.example.foodplanner.datasource.remote.MealsRemoteDataSource;
+import com.example.foodplanner.data.datasource.remote.MealsNetworkResponse;
+import com.example.foodplanner.data.datasource.remote.MealsRemoteDataSource;
 import com.example.foodplanner.mealsbycategory.view.MealsByCategoryView;
-import com.example.foodplanner.model.Meal;
+import com.example.foodplanner.data.model.Meal;
 
 import java.util.List;
 

@@ -10,12 +10,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.foodplanner.R;
-import com.example.foodplanner.model.Category;
+import com.example.foodplanner.data.model.Category;
 
 import java.util.ArrayList;
 import java.util.List;

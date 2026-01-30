@@ -1,9 +1,9 @@
 package com.example.foodplanner.details.presenter;
 
-import com.example.foodplanner.datasource.remote.MealDetailNetworkResponse;
-import com.example.foodplanner.datasource.remote.MealsRemoteDataSource;
+import com.example.foodplanner.data.datasource.remote.MealDetailNetworkResponse;
+import com.example.foodplanner.data.datasource.remote.MealsRemoteDataSource;
 import com.example.foodplanner.details.view.DetailsView;
-import com.example.foodplanner.model.MealDetail;
+import com.example.foodplanner.data.model.MealDetail;
 
 public class DetailsPresenterImp implements DetailsPresenter   {
 

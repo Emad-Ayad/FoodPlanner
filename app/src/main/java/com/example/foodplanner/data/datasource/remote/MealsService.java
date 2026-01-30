@@ -1,6 +1,10 @@
-package com.example.foodplanner.datasource.remote;
+package com.example.foodplanner.data.datasource.remote;
 
-import com.example.foodplanner.model.*;
+import com.example.foodplanner.data.model.CategoryListResponse;
+import com.example.foodplanner.data.model.CountriesResponse;
+import com.example.foodplanner.data.model.IngredientsResponse;
+import com.example.foodplanner.data.model.MealsDetailsResponse;
+import com.example.foodplanner.data.model.MealsResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

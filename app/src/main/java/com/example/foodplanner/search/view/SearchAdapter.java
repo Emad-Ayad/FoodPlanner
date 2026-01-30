@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.foodplanner.R;
-import com.example.foodplanner.model.Meal;
+import com.example.foodplanner.data.model.Meal;
 
 import java.util.ArrayList;
 import java.util.List;

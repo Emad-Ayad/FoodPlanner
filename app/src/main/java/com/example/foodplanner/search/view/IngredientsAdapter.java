@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodplanner.R;
-import com.example.foodplanner.model.Ingredient;
+import com.example.foodplanner.data.model.Ingredient;
 
 import java.util.ArrayList;
 import java.util.List;

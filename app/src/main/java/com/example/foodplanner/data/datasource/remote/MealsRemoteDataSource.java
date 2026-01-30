@@ -1,15 +1,15 @@
-package com.example.foodplanner.datasource.remote;
+package com.example.foodplanner.data.datasource.remote;
 
-import com.example.foodplanner.Network.Network;
-import com.example.foodplanner.model.CategoryListResponse;
-import com.example.foodplanner.model.MealDetail;
-import com.example.foodplanner.model.MealsDetailsResponse;
-import com.example.foodplanner.model.MealsResponse;
+import com.example.foodplanner.data.Network.Network;
+import com.example.foodplanner.data.model.CategoryListResponse;
+import com.example.foodplanner.data.model.MealDetail;
+import com.example.foodplanner.data.model.MealsDetailsResponse;
+import com.example.foodplanner.data.model.MealsResponse;
 
 import java.io.IOException;
 
-import com.example.foodplanner.model.CountriesResponse;
-import com.example.foodplanner.model.IngredientsResponse;
+import com.example.foodplanner.data.model.CountriesResponse;
+import com.example.foodplanner.data.model.IngredientsResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

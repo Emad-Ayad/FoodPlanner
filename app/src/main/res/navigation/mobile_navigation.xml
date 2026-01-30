@@ -60,7 +60,7 @@
 
     <fragment
         android:id="@+id/detailsFragment"
-        android:name="com.example.foodplanner.details.DetailsFragment"
+        android:name="com.example.foodplanner.details.view.DetailsFragment"
         tools:layout="@layout/fragment_details" >
         <argument
             android:name="mealId"

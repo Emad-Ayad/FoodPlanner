@@ -1,7 +1,6 @@
-package com.example.foodplanner.details;
+package com.example.foodplanner.details.view;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,16 +11,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.foodplanner.details.presenter.DetailsPresenter;
 import com.example.foodplanner.details.presenter.DetailsPresenterImp;
 
 import com.bumptech.glide.Glide;
 import com.example.foodplanner.R;
-import com.example.foodplanner.details.view.DetailsView;
-import com.example.foodplanner.model.MealDetail;
+import com.example.foodplanner.data.model.MealDetail;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;

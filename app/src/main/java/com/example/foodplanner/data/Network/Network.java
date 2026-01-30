@@ -1,6 +1,6 @@
-package com.example.foodplanner.Network;
+package com.example.foodplanner.data.Network;
 
-import com.example.foodplanner.datasource.remote.MealsService;
+import com.example.foodplanner.data.datasource.remote.MealsService;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

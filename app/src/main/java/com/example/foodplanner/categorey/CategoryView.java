@@ -1,5 +1,5 @@
 package com.example.foodplanner.categorey;
-import com.example.foodplanner.model.*;
+import com.example.foodplanner.data.model.Category;
 
 import java.util.List;
 

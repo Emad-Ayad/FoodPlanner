@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import com.example.foodplanner.categorey.presenter.*;
 import com.example.foodplanner.R;
-import com.example.foodplanner.model.Category;
+import com.example.foodplanner.data.model.Category;
 
 import java.util.List;
 
