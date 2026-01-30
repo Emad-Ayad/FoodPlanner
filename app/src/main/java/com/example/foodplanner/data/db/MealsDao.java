@@ -25,7 +25,7 @@ public interface MealsDao {
     @Delete
     Completable deleteFav(Meal meal);
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     Completable insertMealPlan(MealPlan mealPlan);
     @Query("SELECT * FROM meal_plans WHERE day = :day")
     Observable<List<MealPlan>> getMealPlanByDay(String day);
