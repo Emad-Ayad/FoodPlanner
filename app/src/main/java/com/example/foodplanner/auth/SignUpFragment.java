@@ -1,5 +1,6 @@
 package com.example.foodplanner.auth;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,12 +17,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.foodplanner.MainActivity;
 import com.example.foodplanner.firebase.*;
 import com.example.foodplanner.R;
 
-public class SignUpFragment extends Fragment { //TODO signUp with Google and Facebook
+public class SignUpFragment extends Fragment {
     EditText username, email, password, confirmPassword;
-    Button signUpButton,googleBtn,facebookBtn;
+    Button signUpButton,googleBtn;
     TextView login;
     AuthManger authManger;
 
@@ -41,7 +43,6 @@ public class SignUpFragment extends Fragment { //TODO signUp with Google and Fac
         confirmPassword = view.findViewById(R.id.confirmPasswordInput);
         signUpButton = view.findViewById(R.id.signUpButton);
         googleBtn = view.findViewById(R.id.googleLogin);
-        facebookBtn = view.findViewById(R.id.facebookLogin);
         login = view.findViewById(R.id.toLogin);
         authManger = new AuthManger();
 
@@ -61,7 +62,11 @@ public class SignUpFragment extends Fragment { //TODO signUp with Google and Fac
 
             authManger.register(emailText, passwordText, new AuthResponse() {
                 @Override
-                public void onSuccess() { //TODO Navigate to Home
+                public void onSuccess() {
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    getActivity().finish();
                     Toast.makeText(getContext(), "Registration Successful", Toast.LENGTH_SHORT).show();
                 }
 
@@ -72,18 +77,10 @@ public class SignUpFragment extends Fragment { //TODO signUp with Google and Fac
             });
         });
 
-
-
         login.setOnClickListener(v->{
             NavHostFragment.findNavController(this)
                     .navigate(R.id.action_signUpFragment_to_loginFragment);
         });
-
-
-
-
-
-
 
     }
 }

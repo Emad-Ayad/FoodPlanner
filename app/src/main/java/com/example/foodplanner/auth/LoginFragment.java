@@ -8,9 +8,12 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.credentials.CredentialManager;
+import androidx.credentials.CredentialManagerCallback;
 import androidx.credentials.GetCredentialRequest;
+import androidx.credentials.GetCredentialResponse;
+import androidx.credentials.exceptions.GetCredentialException;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
@@ -22,21 +25,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.foodplanner.R;
+import com.example.foodplanner.MainActivity;
 import com.example.foodplanner.firebase.*;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.ApiException;
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential;
+
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 
 public class LoginFragment extends Fragment {//TODO sign with Google and Facebook
 
     EditText email, password;
-    Button loginBtn,googleBtn,facebookBtn,guestBtn;
+    Button loginBtn,googleBtn,guestBtn;
     TextView signUp;
     AuthManger authManger;
 
@@ -54,7 +55,6 @@ public class LoginFragment extends Fragment {//TODO sign with Google and Faceboo
         password = view.findViewById(R.id.passwordInput);
         loginBtn = view.findViewById(R.id.loginButton);
         googleBtn = view.findViewById(R.id.googleLogin);
-        facebookBtn = view.findViewById(R.id.facebookLogin);
         guestBtn = view.findViewById(R.id.guestButton);
         signUp = view.findViewById(R.id.toSignUp);
         authManger = new AuthManger();
@@ -70,7 +70,11 @@ public class LoginFragment extends Fragment {//TODO sign with Google and Faceboo
             else{
                 authManger.login(emailValue, passwordValue, new AuthResponse() {
                     @Override
-                    public void onSuccess() { // TODO Navigate to home fragment
+                    public void onSuccess() {
+                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        getActivity().finish();
                         Toast.makeText(getContext(), "Login Successful", Toast.LENGTH_SHORT).show();
                     }
 
@@ -82,10 +86,78 @@ public class LoginFragment extends Fragment {//TODO sign with Google and Faceboo
             }
         });
 
+        googleBtn.setOnClickListener(v -> signInWithGoogle());
+
         signUp.setOnClickListener(v->{
             NavHostFragment.findNavController(this)
                     .navigate(R.id.action_loginFragment_to_signUpFragment);
         });
+    }
+    private void signInWithGoogle() {
+
+        Executor executor = Executors.newSingleThreadExecutor();
+
+        GetGoogleIdOption googleIdOption =
+                new GetGoogleIdOption.Builder()
+                        .setFilterByAuthorizedAccounts(false)
+                        .setServerClientId(authManger.webId)
+                        .build();
+
+        GetCredentialRequest request =
+                new GetCredentialRequest.Builder()
+                        .addCredentialOption(googleIdOption)
+                        .build();
+
+        CredentialManager credentialManager = CredentialManager.create(requireContext());
+
+        credentialManager.getCredentialAsync(requireActivity(), request, null, executor,
+                new CredentialManagerCallback<GetCredentialResponse, GetCredentialException>() {
+
+                    @Override
+                    public void onResult(GetCredentialResponse result) {
+
+                        if (result.getCredential() instanceof GoogleIdTokenCredential) {
+
+                            GoogleIdTokenCredential googleCredential =
+                                    GoogleIdTokenCredential.createFrom(
+                                            result.getCredential().getData()
+                                    );
+
+                            String idToken = googleCredential.getIdToken();
+
+                            authManger.firebaseAuthWithGoogle(idToken, new AuthResponse() {
+                                @Override
+                                public void onSuccess() {
+                                    requireActivity().runOnUiThread(() -> {
+                                        Toast.makeText(getContext(),
+                                                "Google Login Success",
+                                                Toast.LENGTH_SHORT).show();
+
+                                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        startActivity(intent);
+                                        getActivity().finish();
+                                    });
+                                }
+
+                                @Override
+                                public void onFailure(String error) {
+                                    requireActivity().runOnUiThread(() ->
+                                            Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show()
+                                    );
+                                }
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void onError(GetCredentialException e) {
+                        requireActivity().runOnUiThread(() ->
+                                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show()
+                        );
+                    }
+                }
+        );
     }
 
 }

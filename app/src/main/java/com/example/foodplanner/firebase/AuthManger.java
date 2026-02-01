@@ -1,11 +1,13 @@
 package com.example.foodplanner.firebase;
 
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GoogleAuthProvider;
 
 
 public class AuthManger { //TODO sign with Google and Facebook
     private FirebaseAuth auth = FirebaseAuth.getInstance();
-    String webId="867975195220-qnhje0freg6ka2ars5t1haarl62jphnu.apps.googleusercontent.com";
+    public String webId="867975195220-qnhje0freg6ka2ars5t1haarl62jphnu.apps.googleusercontent.com";
 
 
 
@@ -32,8 +34,30 @@ public class AuthManger { //TODO sign with Google and Facebook
                 });
     }
 
+
+    public void firebaseAuthWithGoogle(String idToken, AuthResponse callback) {
+        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
+
+        auth.signInWithCredential(credential)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        callback.onSuccess();
+                    } else {
+                        callback.onFailure(task.getException().getMessage());
+                    }
+                });
+    }
+
     public boolean isLoggedIn() {
         return auth.getCurrentUser() != null;
+    }
+
+    public String getUserEmail() {
+        return auth.getCurrentUser() != null ? auth.getCurrentUser().getEmail() : "";
+    }
+
+    public String getUserName() {
+        return auth.getCurrentUser() != null ? auth.getCurrentUser().getDisplayName() : "";
     }
 
     public void logout() {

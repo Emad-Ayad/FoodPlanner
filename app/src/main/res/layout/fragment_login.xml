@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="24dp"
+    android:padding="24dp"
     android:layout_gravity="center"
     android:background="@color/white"
     tools:context=".auth.LoginFragment">
@@ -149,9 +149,10 @@
 
     <Button
         android:id="@+id/googleLogin"
-        android:layout_width="150dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
         android:layout_marginTop="14dp"
         android:text="Google"
         android:textColor="@color/black"
@@ -164,23 +165,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/orText" />
 
-    <Button
-        android:id="@+id/facebookLogin"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="12dp"
-        android:layout_marginTop="14dp"
-        android:text="Facebook"
-        android:textColor="@color/black"
-        app:backgroundTint="@color/white"
-        app:icon="@drawable/facebook"
-        app:iconGravity="textStart"
-        app:iconTint="@null"
-        app:strokeWidth="1dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/orText"
-        app:strokeColor="@color/text_hint"
-         />
+
 
     <Button
         android:id="@+id/guestButton"
