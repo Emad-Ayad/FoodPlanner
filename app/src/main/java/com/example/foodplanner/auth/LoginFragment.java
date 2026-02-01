@@ -1,11 +1,7 @@
 package com.example.foodplanner.auth;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.credentials.CredentialManager;
@@ -15,7 +11,6 @@ import androidx.credentials.GetCredentialResponse;
 import androidx.credentials.exceptions.GetCredentialException;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,18 +18,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.foodplanner.R;
 import com.example.foodplanner.MainActivity;
+import com.example.foodplanner.R;
 import com.example.foodplanner.firebase.*;
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption;
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential;
-
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 
-public class LoginFragment extends Fragment {//TODO sign with Google and Facebook
+public class LoginFragment extends Fragment {
 
     EditText email, password;
     Button loginBtn,googleBtn,guestBtn;
@@ -43,7 +36,7 @@ public class LoginFragment extends Fragment {//TODO sign with Google and Faceboo
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_login, container, false);
     }
@@ -59,15 +52,13 @@ public class LoginFragment extends Fragment {//TODO sign with Google and Faceboo
         signUp = view.findViewById(R.id.toSignUp);
         authManger = new AuthManger();
 
-
-        loginBtn.setOnClickListener(v->{
-            String emailValue= email.getText().toString();
-            String passwordValue=password.getText().toString();
-            if(emailValue.isEmpty() || passwordValue.isEmpty()){
+        loginBtn.setOnClickListener(v -> {
+            String emailValue = email.getText().toString();
+            String passwordValue = password.getText().toString();
+            if (emailValue.isEmpty() || passwordValue.isEmpty()) {
                 email.setError("Please enter email");
                 password.setError("Please enter password");
-            }
-            else{
+            } else {
                 authManger.login(emailValue, passwordValue, new AuthResponse() {
                     @Override
                     public void onSuccess() {
@@ -88,7 +79,7 @@ public class LoginFragment extends Fragment {//TODO sign with Google and Faceboo
 
         googleBtn.setOnClickListener(v -> signInWithGoogle());
 
-        signUp.setOnClickListener(v->{
+        signUp.setOnClickListener(v -> {
             NavHostFragment.findNavController(this)
                     .navigate(R.id.action_loginFragment_to_signUpFragment);
         });
@@ -159,5 +150,4 @@ public class LoginFragment extends Fragment {//TODO sign with Google and Faceboo
                 }
         );
     }
-
 }

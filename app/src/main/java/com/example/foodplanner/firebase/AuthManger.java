@@ -4,11 +4,9 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-
-public class AuthManger { //TODO sign with Google and Facebook
+public class AuthManger {
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     public String webId="867975195220-qnhje0freg6ka2ars5t1haarl62jphnu.apps.googleusercontent.com";
-
 
 
     public void login(String email, String password, AuthResponse callback) {
@@ -21,7 +19,6 @@ public class AuthManger { //TODO sign with Google and Facebook
                     }
                 });
     }
-
 
     public void register(String email, String password, AuthResponse callback) {
         auth.createUserWithEmailAndPassword(email, password)
@@ -63,6 +60,5 @@ public class AuthManger { //TODO sign with Google and Facebook
     public void logout() {
         auth.signOut();
     }
-
 
 }
