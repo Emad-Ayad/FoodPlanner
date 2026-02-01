@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:paddingTop="70dp"
     android:paddingBottom="100dp"
-    tools:context=".favorite.view.FavoriteFragment">
+    tools:context=".view.favorite.view.FavoriteFragment">
 
     <TextView
         android:id="@+id/tvTitle"

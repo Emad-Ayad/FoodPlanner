@@ -7,7 +7,7 @@
     android:paddingTop="36dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fitsSystemWindows="true"
-    tools:context=".search.view.SearchFragment">
+    tools:context=".view.search.view.SearchFragment">
 
 
     <com.google.android.material.textfield.TextInputLayout
