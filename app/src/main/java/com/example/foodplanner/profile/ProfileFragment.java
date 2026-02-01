@@ -1,5 +1,6 @@
 package com.example.foodplanner.profile;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -7,8 +8,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import com.example.foodplanner.firebase.AuthManger;
+import com.example.foodplanner.auth.AuthActivity;
 
 import com.example.foodplanner.R;
 
@@ -16,6 +19,7 @@ import com.example.foodplanner.R;
 public class ProfileFragment extends Fragment {
 
     TextView nameTv, emailTv;
+    Button logoutBtn;
     AuthManger authManger;
 
     @Override
@@ -31,10 +35,27 @@ public class ProfileFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         nameTv = view.findViewById(R.id.profileName);
         emailTv = view.findViewById(R.id.profileEmail);
+        logoutBtn = view.findViewById(R.id.exit);
 
         authManger = new AuthManger();
 
-        nameTv.setText(authManger.getUserName());
-        emailTv.setText(authManger.getUserEmail());
+        if (authManger.isGuest(requireContext())) {
+            nameTv.setText("Guest User");
+            emailTv.setText("Limited access");
+            logoutBtn.setText("Login");
+        } else {
+            nameTv.setText(authManger.getUserName());
+            emailTv.setText(authManger.getUserEmail());
+            logoutBtn.setText("Logout");
+        }
+
+        logoutBtn.setOnClickListener(v->{
+            authManger.logout();
+            authManger.clearGuest(getContext());
+            Intent intent = new Intent(requireActivity(), AuthActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            requireActivity().finish();
+        });
     }
 }

@@ -68,8 +68,8 @@ public class AuthManger {
                 .getBoolean("isGuest", false);
     }
 
-    public void clearGuest(Activity activity) {
-        activity.getSharedPreferences("app_prefs", activity.MODE_PRIVATE)
+    public void clearGuest(Context context) {
+        context.getSharedPreferences("app_prefs", context.MODE_PRIVATE)
                 .edit()
                 .remove("isGuest")
                 .apply();

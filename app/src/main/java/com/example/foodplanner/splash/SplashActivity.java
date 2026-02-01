@@ -29,17 +29,17 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void checkAuthStatus() {
-        /*if (authManger.isLoggedIn()) {
+        if (authManger.isLoggedIn()) {
             Intent intent = new Intent(this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
-        } else {*/
+        } else {
             Intent intent = new Intent(this, AuthActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
-        //}
+        }
     }
 
 }
