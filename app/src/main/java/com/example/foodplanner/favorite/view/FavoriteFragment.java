@@ -11,21 +11,23 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.foodplanner.R;
 import com.example.foodplanner.data.model.Meal;
 import com.example.foodplanner.favorite.presenter.FavoritePresenter;
 import com.example.foodplanner.favorite.presenter.FavoritePresenterImp;
+import com.example.foodplanner.firebase.AuthManger;
 
 import java.util.List;
 
 public class FavoriteFragment extends Fragment implements FavoriteView {
 
     private RecyclerView rvFavorites;
+    private TextView guestMessage;
     private FavoriteAdapter adapter;
     private FavoritePresenter presenter;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,16 +47,33 @@ public class FavoriteFragment extends Fragment implements FavoriteView {
 
         rvFavorites = view.findViewById(R.id.rvFavorites);
         rvFavorites.setLayoutManager(new LinearLayoutManager(getContext()));
+        guestMessage = view.findViewById(R.id.guestMessage);
 
-        adapter = new FavoriteAdapter(getContext(), meal -> {
-            presenter.removeFromFavorites(meal);
-            Toast.makeText(getContext(), "Removed from favorites", Toast.LENGTH_SHORT).show();
-        });
-        rvFavorites.setAdapter(adapter);
+        AuthManger authManger = new AuthManger();
+        boolean isGuest = authManger.isGuest(getContext());
 
-        presenter = new FavoritePresenterImp(this, getContext());
+        if (isGuest) {
+            if (guestMessage != null) {
+                guestMessage.setVisibility(View.VISIBLE);
+                guestMessage.setText("Login to save your favorite meals");
+            }
+            rvFavorites.setVisibility(View.GONE);
+        } else {
+            if (guestMessage != null) {
+                guestMessage.setVisibility(View.GONE);
+            }
+            rvFavorites.setVisibility(View.VISIBLE);
 
-        presenter.getFavorites();
+            adapter = new FavoriteAdapter(getContext(), meal -> {
+                presenter.removeFromFavorites(meal);
+                Toast.makeText(getContext(), "Removed from favorites", Toast.LENGTH_SHORT).show();
+            });
+            rvFavorites.setAdapter(adapter);
+
+            presenter = new FavoritePresenterImp(this, getContext());
+
+            presenter.getFavorites();
+        }
     }
 
     @Override

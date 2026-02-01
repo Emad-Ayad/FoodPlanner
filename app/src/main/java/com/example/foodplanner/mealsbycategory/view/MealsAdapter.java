@@ -22,24 +22,26 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
 
     private List<Meal> meals = new ArrayList<>();
     private Context context;
+    private boolean isGuest = false;
 
     private OnPlanClickListener planListener;
-    private HomeAdapter.OnFavClickListener favListener;
-
+    private OnFavClickListener favListener;
 
     public interface OnPlanClickListener {
         void onPlanClick(Meal meal);
     }
+
     public interface OnFavClickListener {
         void onFavClick(Meal meal);
     }
 
-    public MealsAdapter(Context context, OnPlanClickListener planListener, HomeAdapter.OnFavClickListener favListener) {
+    public MealsAdapter(Context context, OnPlanClickListener planListener, OnFavClickListener favListener,
+            boolean isGuest) {
         this.context = context;
         this.planListener = planListener;
         this.favListener = favListener;
+        this.isGuest = isGuest;
     }
-
 
     public void setMeals(List<Meal> meals) {
         this.meals = meals;
@@ -66,17 +68,26 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
             Navigation.findNavController(v).navigate(action);
         });
 
-        holder.addToPlanBtn.setOnClickListener(v -> {
-            if (planListener != null) {
-                planListener.onPlanClick(meals.get(position));
-            }
-        });
+        // Hide buttons for guest users
+        if (isGuest) {
+            holder.addToPlanBtn.setVisibility(View.GONE);
+            holder.addToFavBtn.setVisibility(View.GONE);
+        } else {
+            holder.addToPlanBtn.setVisibility(View.VISIBLE);
+            holder.addToFavBtn.setVisibility(View.VISIBLE);
 
-        holder.addToFavBtn.setOnClickListener(v->{
-            if (favListener != null) {
-                favListener.onFavClick(meals.get(position));
-            }
-        });
+            holder.addToPlanBtn.setOnClickListener(v -> {
+                if (planListener != null) {
+                    planListener.onPlanClick(meals.get(position));
+                }
+            });
+
+            holder.addToFavBtn.setOnClickListener(v -> {
+                if (favListener != null) {
+                    favListener.onFavClick(meals.get(position));
+                }
+            });
+        }
     }
 
     @Override

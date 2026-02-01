@@ -21,6 +21,7 @@ import com.example.foodplanner.mealsbycategory.presenter.MealsByCategoryPresente
 import com.example.foodplanner.mealsbycategory.presenter.MealsByCategoryPresenterImp;
 import com.example.foodplanner.data.model.Meal;
 import com.example.foodplanner.data.model.MealPlan;
+import com.example.foodplanner.firebase.AuthManger;
 import com.google.android.material.appbar.MaterialToolbar;
 import java.util.List;
 
@@ -63,13 +64,16 @@ public class MealsByCategoryFragment extends Fragment implements MealsByCategory
 
         rvMeals.setLayoutManager(new GridLayoutManager(getContext(), 2));
         if (getContext() != null) {
+            AuthManger authManger = new AuthManger();
+            boolean isGuest = authManger.isGuest(getContext());
+
             mealsAdapter = new MealsAdapter(this.getContext(), meal -> {
                 showDayPickerDialog(meal);
-            },meal -> {
+            }, meal -> {
                 presenter.addToFav(meal);
-                Toast.makeText(getContext(), "Added to Fav " , Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Added to Fav ", Toast.LENGTH_SHORT).show();
 
-            });
+            }, isGuest);
         }
         rvMeals.setAdapter(mealsAdapter);
 
@@ -83,7 +87,7 @@ public class MealsByCategoryFragment extends Fragment implements MealsByCategory
         new AlertDialog.Builder(getContext())
                 .setTitle("Choose a day")
                 .setItems(week, (dialog, day) -> {
-                   MealPlan plan = new MealPlan(
+                    MealPlan plan = new MealPlan(
                             meal.getId(),
                             week[day],
                             meal.getName(),
@@ -91,7 +95,7 @@ public class MealsByCategoryFragment extends Fragment implements MealsByCategory
                             meal.getArea(),
                             categoryName);
                     presenter.addToPlan(plan);
-                    Toast.makeText(getContext(), "Added to plan " , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Added to plan ", Toast.LENGTH_SHORT).show();
                 }).show();
     }
 

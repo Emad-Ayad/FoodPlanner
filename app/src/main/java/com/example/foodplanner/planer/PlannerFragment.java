@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,12 +20,14 @@ import com.example.foodplanner.planer.presenter.PlannerPresenterImp;
 import com.example.foodplanner.planer.view.PlannerAdapter;
 import com.example.foodplanner.planer.view.PlannerView;
 import com.example.foodplanner.data.model.MealPlan;
+import com.example.foodplanner.firebase.AuthManger;
 
 import java.util.List;
 
 public class PlannerFragment extends Fragment implements PlannerView {
 
     private RecyclerView rvPlan;
+    private TextView guestMessage;
     private PlannerAdapter adapter;
     private PlannerPresenter presenter;
 
@@ -40,14 +43,31 @@ public class PlannerFragment extends Fragment implements PlannerView {
 
         rvPlan = view.findViewById(R.id.rvPlan);
         rvPlan.setLayoutManager(new LinearLayoutManager(getContext()));
+        guestMessage = view.findViewById(R.id.guestMessage);
 
-        adapter = new PlannerAdapter(getContext(), plan -> {
-            presenter.removeFromPlan(plan);
-        });
-        rvPlan.setAdapter(adapter);
+        AuthManger authManger = new AuthManger();
+        boolean isGuest = authManger.isGuest(getContext());
 
-        presenter = new PlannerPresenterImp(this, getContext());
-        presenter.getMealPlan();
+        if (isGuest) {
+            if (guestMessage != null) {
+                guestMessage.setVisibility(View.VISIBLE);
+                guestMessage.setText("Login to plan your meals");
+            }
+            rvPlan.setVisibility(View.GONE);
+        } else {
+            if (guestMessage != null) {
+                guestMessage.setVisibility(View.GONE);
+            }
+            rvPlan.setVisibility(View.VISIBLE);
+
+            adapter = new PlannerAdapter(getContext(), plan -> {
+                presenter.removeFromPlan(plan);
+            });
+            rvPlan.setAdapter(adapter);
+
+            presenter = new PlannerPresenterImp(this, getContext());
+            presenter.getMealPlan();
+        }
     }
 
     @Override

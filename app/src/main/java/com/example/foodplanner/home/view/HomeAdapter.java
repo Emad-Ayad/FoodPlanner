@@ -21,6 +21,7 @@ import java.util.List;
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MealViewHolder> {
 
     private List<Meal> meals = new ArrayList<>();
+    private boolean isGuest = false;
 
     private OnPlanClickListener planListener;
     private OnFavClickListener favListener;
@@ -33,12 +34,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MealViewHolder
         void onFavClick(Meal meal);
     }
 
-    HomeAdapter(OnPlanClickListener listener, OnFavClickListener favListener) {
+    HomeAdapter(OnPlanClickListener listener, OnFavClickListener favListener, boolean isGuest) {
         this.planListener = listener;
         this.favListener = favListener;
+        this.isGuest = isGuest;
     }
-
-
 
     public void updateMeals(List<Meal> newMeals) {
         this.meals.clear();
@@ -49,7 +49,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MealViewHolder
     @Override
     public MealViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(com.example.foodplanner.R.layout.home_meals_card,parent, false);
+                .inflate(com.example.foodplanner.R.layout.home_meals_card, parent, false);
         return new MealViewHolder(view);
     }
 
@@ -65,17 +65,25 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MealViewHolder
 
         });
 
-        holder.addToPlanBtn.setOnClickListener(v -> {
-            if (planListener != null) {
-                planListener.onPlanClick(meals.get(position));
-            }
-        });
+        if (isGuest) {
+            holder.addToPlanBtn.setVisibility(View.GONE);
+            holder.addToFavBtn.setVisibility(View.GONE);
+        } else {
+            holder.addToPlanBtn.setVisibility(View.VISIBLE);
+            holder.addToFavBtn.setVisibility(View.VISIBLE);
 
-        holder.addToFavBtn.setOnClickListener(v->{
-            if (favListener != null) {
-                favListener.onFavClick(meals.get(position));
-            }
-        });
+            holder.addToPlanBtn.setOnClickListener(v -> {
+                if (planListener != null) {
+                    planListener.onPlanClick(meals.get(position));
+                }
+            });
+
+            holder.addToFavBtn.setOnClickListener(v -> {
+                if (favListener != null) {
+                    favListener.onFavClick(meals.get(position));
+                }
+            });
+        }
 
     }
 
@@ -90,7 +98,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MealViewHolder
         ImageView addToPlanBtn;
         ImageView addToFavBtn;
 
-
         public MealViewHolder(@NonNull View itemView) {
             super(itemView);
             mealImage = itemView.findViewById(R.id.mealImage);
@@ -102,14 +109,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MealViewHolder
             addToPlanBtn = itemView.findViewById(R.id.addToPlanBtn);
             addToFavBtn = itemView.findViewById(R.id.addToFavBtn);
 
-
             Glide.with(mealImage.getContext())
                     .load(meal.getImageUrl())
                     .centerCrop()
                     .placeholder(R.drawable.placeholder_food)
                     .into(mealImage);
-
-
 
         }
     }

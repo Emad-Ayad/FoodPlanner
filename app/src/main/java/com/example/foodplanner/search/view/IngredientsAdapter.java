@@ -36,7 +36,7 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
     @Override
     public IngredientViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.ingreadans_item, parent, false);
+                .inflate(R.layout.area_item, parent, false);
         return new IngredientViewHolder(view);
     }
 
@@ -57,7 +57,7 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
 
         public IngredientViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvIngredient = (TextView) itemView;
+            tvIngredient = itemView.findViewById(R.id.tvArea);
         }
     }
 }

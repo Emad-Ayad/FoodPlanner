@@ -21,12 +21,12 @@ import com.bumptech.glide.Glide;
 import com.example.foodplanner.R;
 import com.example.foodplanner.data.model.Meal;
 import com.example.foodplanner.data.model.MealPlan;
+import com.example.foodplanner.firebase.AuthManger;
 import com.example.foodplanner.home.presenter.*;
 
 import java.util.List;
 
-
-public class HomeFragment extends Fragment implements HomeView{
+public class HomeFragment extends Fragment implements HomeView {
     private ImageView mealImage;
     private TextView mealTitle, mealCountry;
     private RecyclerView recyclerView;
@@ -34,7 +34,8 @@ public class HomeFragment extends Fragment implements HomeView{
     private HomePresenter presenter;
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
@@ -48,24 +49,25 @@ public class HomeFragment extends Fragment implements HomeView{
         mealTitle = view.findViewById(R.id.mealTitle);
         mealCountry = view.findViewById(R.id.mealCountry);
 
+        AuthManger authManger = new AuthManger();
+        boolean isGuest = authManger.isGuest(getContext());
+
         adapter = new HomeAdapter(meal -> {
             showDayPickerDialog(meal);
         }, meal -> {
             presenter.addToFav(meal);
-            Toast.makeText(getContext(), "Added to Fav " , Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Added to Fav ", Toast.LENGTH_SHORT).show();
 
-        });
+        }, isGuest);
         recyclerView.setAdapter(adapter);
-        presenter = new HomePresenterImp(this,getContext());
+        presenter = new HomePresenterImp(this, getContext());
 
-        mealImage.setOnClickListener(v->{
+        mealImage.setOnClickListener(v -> {
             presenter.mealOnClickLinstener();
         });
 
-
         presenter.getMealOfTheDay();
         presenter.getQuickMeals();
-
 
     }
 
@@ -80,15 +82,15 @@ public class HomeFragment extends Fragment implements HomeView{
                             meal.getName(),
                             meal.getImageUrl(),
                             meal.getArea(),
-                            "category" //TODO mybe adjust the model how did i forget ?!
-                            );
+                            "category" // TODO mybe adjust the model how did i forget ?!
+                    );
                     presenter.addToPlan(plan);
-                    Toast.makeText(getContext(), "Added to plan " , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Added to plan ", Toast.LENGTH_SHORT).show();
                 }).show();
     }
 
     @Override
-    public void showMealOfTheDay(Meal meal) { //TODO if i had time move this fun from here
+    public void showMealOfTheDay(Meal meal) { // TODO if i had time move this fun from here
         mealTitle.setText(meal.getName());
         mealCountry.setText(meal.getArea());
         Glide.with(mealImage)

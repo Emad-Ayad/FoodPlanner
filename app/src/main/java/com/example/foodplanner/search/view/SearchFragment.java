@@ -23,6 +23,7 @@ import com.example.foodplanner.data.model.Ingredient;
 import com.example.foodplanner.data.model.Meal;
 import com.example.foodplanner.data.model.MealPlan;
 import com.example.foodplanner.data.model.SearchMode;
+import com.example.foodplanner.firebase.AuthManger;
 import com.example.foodplanner.search.presenter.SearchPresenter;
 import com.example.foodplanner.search.presenter.SearchPresenterImp;
 import com.google.android.material.chip.Chip;
@@ -78,16 +79,18 @@ public class SearchFragment extends Fragment implements SearchedView,
         chipArea = view.findViewById(R.id.chipArea);
         chipIngredient = view.findViewById(R.id.chipIngredient);
 
-
         rvMeals.setLayoutManager(new GridLayoutManager(getContext(), 2));
+
+        AuthManger authManger = new AuthManger();
+        boolean isGuest = authManger.isGuest(getContext());
 
         adapter = new SearchAdapter(this.getContext(), meal -> {
             showDayPickerDialog(meal);
-        },meal -> {
+        }, meal -> {
             presenter.addToFav(meal);
-            Toast.makeText(getContext(), "Added to Fav " , Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Added to Fav ", Toast.LENGTH_SHORT).show();
 
-        });
+        }, isGuest);
 
         areasAdapter = new AreasAdapter(this);
         ingredientsAdapter = new IngredientsAdapter(this);
@@ -95,7 +98,7 @@ public class SearchFragment extends Fragment implements SearchedView,
 
         rvMeals.setAdapter(adapter);
 
-        presenter = new SearchPresenterImp(this,getContext());
+        presenter = new SearchPresenterImp(this, getContext());
         progressBar.setVisibility(View.GONE);
 
         searchText.addTextChangedListener(new TextWatcher() {
@@ -127,7 +130,7 @@ public class SearchFragment extends Fragment implements SearchedView,
                     }
                     List<Category> filtered = new ArrayList<>();
                     for (Category category : categoriesList) {
-                        if (category.getName().toLowerCase().contains(text)){
+                        if (category.getName().toLowerCase().contains(text)) {
                             filtered.add(category);
                         }
                     }
@@ -139,20 +142,20 @@ public class SearchFragment extends Fragment implements SearchedView,
                     }
                     List<Country> filtered = new ArrayList<>();
                     for (Country country : countriesList) {
-                        if (country.getName().toLowerCase().contains(text)){
+                        if (country.getName().toLowerCase().contains(text)) {
                             filtered.add(country);
                         }
                     }
                     areasAdapter.setCountries(filtered);
 
-                }else if (currentMode == SearchMode.INGREDIENT) {
+                } else if (currentMode == SearchMode.INGREDIENT) {
                     if (text.isEmpty()) {
                         ingredientsAdapter.setIngredients(ingredientsList);
                         return;
                     }
                     List<Ingredient> filtered = new ArrayList<>();
                     for (Ingredient ingredient : ingredientsList) {
-                        if (ingredient.getName().toLowerCase().contains(text)){
+                        if (ingredient.getName().toLowerCase().contains(text)) {
                             filtered.add(ingredient);
                         }
                     }
@@ -178,7 +181,7 @@ public class SearchFragment extends Fragment implements SearchedView,
                             meal.getArea(),
                             "category");
                     presenter.addToPlan(plan);
-                    Toast.makeText(getContext(), "Added to plan " , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Added to plan ", Toast.LENGTH_SHORT).show();
                 }).show();
     }
 
@@ -226,21 +229,21 @@ public class SearchFragment extends Fragment implements SearchedView,
     @Override
     public void showCategories(List<Category> categories) {
         progressBar.setVisibility(View.GONE);
-        categoriesList=categories;
+        categoriesList = categories;
         categoryAdapter.setCategories(categoriesList);
     }
 
     @Override
     public void showAreas(List<Country> countries) {
         progressBar.setVisibility(View.GONE);
-        countriesList=countries;
+        countriesList = countries;
         areasAdapter.setCountries(countriesList);
     }
 
     @Override
     public void showIngredients(List<Ingredient> ingredients) {
         progressBar.setVisibility(View.GONE);
-        ingredientsList=ingredients;
+        ingredientsList = ingredients;
         ingredientsAdapter.setIngredients(ingredientsList);
     }
 

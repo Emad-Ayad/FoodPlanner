@@ -83,6 +83,18 @@ public class LoginFragment extends Fragment {
             NavHostFragment.findNavController(this)
                     .navigate(R.id.action_loginFragment_to_signUpFragment);
         });
+
+        guestBtn.setOnClickListener(v -> {
+            requireActivity().getSharedPreferences("app_prefs", getContext().MODE_PRIVATE)
+                    .edit()
+                    .putBoolean("isGuest", true)
+                    .apply();
+
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            getActivity().finish();
+        });
     }
     private void signInWithGoogle() {
 

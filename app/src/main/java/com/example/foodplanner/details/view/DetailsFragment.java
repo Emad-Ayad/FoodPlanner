@@ -21,6 +21,7 @@ import com.bumptech.glide.Glide;
 import com.example.foodplanner.R;
 import com.example.foodplanner.data.model.MealDetail;
 import com.example.foodplanner.data.model.Meal;
+import com.example.foodplanner.firebase.AuthManger;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
@@ -30,9 +31,9 @@ import java.util.regex.Pattern;
 
 public class DetailsFragment extends Fragment implements DetailsView {
 
-    private DetailsPresenter presenter ;
+    private DetailsPresenter presenter;
     private ImageView mealImage;
-    private TextView mealName,mealArea,mealCategory,instructionsText;
+    private TextView mealName, mealArea, mealCategory, instructionsText;
 
     private YouTubePlayerView youtubePlayerView;
     private IngredientsAdapter ingredientsAdapter;
@@ -40,7 +41,6 @@ public class DetailsFragment extends Fragment implements DetailsView {
     private ImageView addToFavBtn;
     private boolean isFav = false;
     private Meal currentMeal;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,7 +54,7 @@ public class DetailsFragment extends Fragment implements DetailsView {
         super.onViewCreated(view, savedInstanceState);
 
         initViews(view);
-        presenter = new DetailsPresenterImp(this,getContext());
+        presenter = new DetailsPresenterImp(this, getContext());
 
         String mealId = null;
         if (getArguments() != null) {
@@ -99,16 +99,23 @@ public class DetailsFragment extends Fragment implements DetailsView {
                 meal.getId(),
                 meal.getName(),
                 meal.getCountry(),
-                meal.getImageUrl()
-        );
+                meal.getImageUrl());
 
-        addToFavBtn.setOnClickListener(v -> {
-            if (isFav) {
-                presenter.removeFromFav(currentMeal);
-            } else {
-                presenter.addToFav(currentMeal);
-            }
-        });
+        AuthManger authManger = new AuthManger();
+        boolean isGuest = authManger.isGuest(getContext());
+
+        if (isGuest) {
+            addToFavBtn.setVisibility(View.GONE);
+        } else {
+            addToFavBtn.setVisibility(View.VISIBLE);
+            addToFavBtn.setOnClickListener(v -> {
+                if (isFav) {
+                    presenter.removeFromFav(currentMeal);
+                } else {
+                    presenter.addToFav(currentMeal);
+                }
+            });
+        }
     }
 
     @Override
@@ -127,8 +134,7 @@ public class DetailsFragment extends Fragment implements DetailsView {
     public void updateFavState(boolean isFav) {
         this.isFav = isFav;
         addToFavBtn.setImageResource(
-                isFav ? R.drawable.baseline_favorite_24 : R.drawable.baseline_favorite_border_24
-        );
+                isFav ? R.drawable.baseline_favorite_24 : R.drawable.baseline_favorite_border_24);
     }
 
     private void loadVideo(String youtubeUrl) {
