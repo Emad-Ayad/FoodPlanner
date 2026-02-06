@@ -8,6 +8,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -51,6 +53,10 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
         holder.tvName.setText(meal.getName());
         Glide.with(context).load(meal.getImageUrl()).placeholder(R.drawable.ic_launcher_background).into(holder.ivMeal);
 
+        holder.itemView.setOnClickListener(v->{
+            NavDirections action = FavoriteFragmentDirections.actionFavoriteFragmentToDetailsFragment(meal.getId());
+            Navigation.findNavController(v).navigate(action);
+        });
 
         holder.btnDelete.setOnClickListener(v -> {
             if (listener != null) {

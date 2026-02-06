@@ -1,6 +1,7 @@
 package com.example.foodplanner.view.planer.view;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -56,6 +59,15 @@ public class PlannerAdapter extends RecyclerView.Adapter<PlannerAdapter.ViewHold
                 onDeleteClickListener.onDeleteClick(plan);
             }
         });
+
+        holder.itemView.setOnClickListener(v->{
+            Bundle bundle = new Bundle();
+            bundle.putString("mealId", plan.getMealId());
+
+            Navigation.findNavController(v).navigate(R.id.detailsFragment, bundle);
+
+        });
+
     }
 
     @Override
