@@ -24,6 +24,7 @@ import com.example.foodplanner.data.model.MealPlan;
 import com.example.foodplanner.data.firebase.AuthManger;
 import com.example.foodplanner.view.home.presenter.HomePresenter;
 import com.example.foodplanner.view.home.presenter.HomePresenterImp;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
@@ -54,10 +55,12 @@ public class HomeFragment extends Fragment implements HomeView {
         boolean isGuest = authManger.isGuest(getContext());
 
         adapter = new HomeAdapter(meal -> {
-            showDayPickerDialog(meal);
-        }, meal -> {
-            presenter.addToFav(meal);
-            Toast.makeText(getContext(), "Added to Fav ", Toast.LENGTH_SHORT).show();
+            if (meal.isFav()) {
+                presenter.addToFav(meal);
+            } else {
+                presenter.removeFromFav(meal);
+            }
+            Snackbar.make(view, "Added to Fav", Snackbar.LENGTH_SHORT).show();
 
         }, isGuest);
         recyclerView.setAdapter(adapter);
@@ -70,24 +73,6 @@ public class HomeFragment extends Fragment implements HomeView {
         presenter.getMealOfTheDay();
         presenter.getQuickMeals();
 
-    }
-
-    private void showDayPickerDialog(Meal meal) {
-        String[] week = { "Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" };
-        new AlertDialog.Builder(getContext())
-                .setTitle("Choose a day")
-                .setItems(week, (dialog, day) -> {
-                    MealPlan plan = new MealPlan(
-                            meal.getId(),
-                            week[day],
-                            meal.getName(),
-                            meal.getImageUrl(),
-                            meal.getArea(),
-                            "category" // TODO mybe adjust the model how did i forget ?!
-                    );
-                    presenter.addToPlan(plan);
-                    Toast.makeText(getContext(), "Added to plan ", Toast.LENGTH_SHORT).show();
-                }).show();
     }
 
     @Override
@@ -114,11 +99,11 @@ public class HomeFragment extends Fragment implements HomeView {
 
     @Override
     public void showError(String message) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
+        Snackbar.make(requireView(), message, Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
     public void showInternetError(String message) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
+        Snackbar.make(requireView(), message, Snackbar.LENGTH_SHORT).show();
     }
 }

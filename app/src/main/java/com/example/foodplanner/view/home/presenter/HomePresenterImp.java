@@ -54,7 +54,21 @@ public class HomePresenterImp implements HomePresenter {
         remoteDataSource.getMealsByArea("Egyptian",new MealsNetworkResponse() {
             @Override
             public void onSuccess(List<Meal> meals) {
-                view.showQuickMeals(meals);
+                repo.getFavMeals()
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(favMeals -> {
+
+                            for (Meal meal : meals) {
+                                for (Meal fav : favMeals) {
+                                    if (meal.getId().equals(fav.getId())) {
+                                        meal.setFav(true);
+                                        break;
+                                    }
+                                }
+                            }
+
+                            view.showQuickMeals(meals);
+                        }, e -> view.showError(e.getMessage()));
             }
 
             @Override
@@ -74,25 +88,28 @@ public class HomePresenterImp implements HomePresenter {
         view.navToMealDetails(meal.getId());
     }
 
-    @Override
-    public void addToPlan(MealPlan plan) {
-        repo.insertMealPlan(plan)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        () -> {},
-                        error -> view.showError(error.getMessage()));
-    }
 
     @Override
     public void addToFav(Meal meal) {
         repo.insertFavMeal(meal)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         () -> {},
-                        error -> view.showError(error.getMessage()));
+                        e -> view.showError(e.getMessage())
+                );
 
     }
 
+    @Override
+    public void removeFromFav(Meal meal) {
+        repo.deleteFavMeal(meal)
+                .subscribe(
+                        () -> {},
+                        e -> view.showError(e.getMessage())
+                );
+    }
+
+
+
+
 }
+

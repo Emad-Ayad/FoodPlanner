@@ -40,7 +40,7 @@
                     android:layout_gravity="top|end"
                     android:layout_margin="12dp"
                     android:src="@drawable/baseline_favorite_24"
-                    app:tint="@color/white"
+                    app:tint="@color/primary_orange"
                     />
             </com.google.android.material.card.MaterialCardView>
 
@@ -154,6 +154,22 @@
                 app:layout_constraintTop_toBottomOf="@id/youtubeTitle"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAddToPlan"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Add to Plan"
+                android:textSize="16sp"
+                app:icon="@drawable/ic_calendar"
+                app:iconPadding="8dp"
+                app:cornerRadius="12dp"
+                app:layout_constraintTop_toBottomOf="@id/youtubePlayer"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:backgroundTint="@color/blue"
+                android:textColor="@color/white"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

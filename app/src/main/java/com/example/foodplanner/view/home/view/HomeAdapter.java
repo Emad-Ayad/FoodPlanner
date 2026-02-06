@@ -22,19 +22,14 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MealViewHolder
     private List<Meal> meals = new ArrayList<>();
     private boolean isGuest = false;
 
-    private OnPlanClickListener planListener;
     private OnFavClickListener favListener;
 
-    public interface OnPlanClickListener {
-        void onPlanClick(Meal meal);
-    }
 
     public interface OnFavClickListener {
         void onFavClick(Meal meal);
     }
 
-    HomeAdapter(OnPlanClickListener listener, OnFavClickListener favListener, boolean isGuest) {
-        this.planListener = listener;
+    HomeAdapter(OnFavClickListener favListener, boolean isGuest) {
         this.favListener = favListener;
         this.isGuest = isGuest;
     }
@@ -65,22 +60,21 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MealViewHolder
         });
 
         if (isGuest) {
-            holder.addToPlanBtn.setVisibility(View.GONE);
             holder.addToFavBtn.setVisibility(View.GONE);
         } else {
-            holder.addToPlanBtn.setVisibility(View.VISIBLE);
             holder.addToFavBtn.setVisibility(View.VISIBLE);
 
-            holder.addToPlanBtn.setOnClickListener(v -> {
-                if (planListener != null) {
-                    planListener.onPlanClick(meals.get(position));
-                }
-            });
-
             holder.addToFavBtn.setOnClickListener(v -> {
-                if (favListener != null) {
-                    favListener.onFavClick(meals.get(position));
+
+                if (meal.isFav()) {
+                    meal.setFav(false);
+                    favListener.onFavClick(meal);
+                } else {
+                    meal.setFav(true);
+                    favListener.onFavClick(meal);
                 }
+
+                notifyItemChanged(position);
             });
         }
 
@@ -94,7 +88,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MealViewHolder
     class MealViewHolder extends RecyclerView.ViewHolder {
         ImageView mealImage;
         TextView mealName;
-        ImageView addToPlanBtn;
         ImageView addToFavBtn;
 
         public MealViewHolder(@NonNull View itemView) {
@@ -105,7 +98,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MealViewHolder
 
         public void bind(Meal meal) {
             mealName.setText(meal.getName());
-            addToPlanBtn = itemView.findViewById(R.id.addToPlanBtn);
             addToFavBtn = itemView.findViewById(R.id.addToFavBtn);
 
             Glide.with(mealImage.getContext())
@@ -113,6 +105,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MealViewHolder
                     .centerCrop()
                     .placeholder(R.drawable.placeholder_food)
                     .into(mealImage);
+
+            addToFavBtn.setImageResource(
+                    meal.isFav()
+                            ? R.drawable.baseline_favorite_24
+                            : R.drawable.baseline_favorite_border_24
+            );
 
         }
     }

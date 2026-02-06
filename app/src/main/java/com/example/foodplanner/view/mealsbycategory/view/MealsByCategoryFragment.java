@@ -1,6 +1,9 @@
 package com.example.foodplanner.view.mealsbycategory.view;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.icu.text.SimpleDateFormat;
+import android.icu.util.Calendar;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -24,6 +27,7 @@ import com.example.foodplanner.data.model.MealPlan;
 import com.example.foodplanner.data.firebase.AuthManger;
 import com.google.android.material.appbar.MaterialToolbar;
 import java.util.List;
+import java.util.Locale;
 
 public class MealsByCategoryFragment extends Fragment implements MealsByCategoryView {
 
@@ -83,20 +87,47 @@ public class MealsByCategoryFragment extends Fragment implements MealsByCategory
     }
 
     private void showDayPickerDialog(Meal meal) {
-        String[] week = { "Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" };
-        new AlertDialog.Builder(getContext())
-                .setTitle("Choose a day")
-                .setItems(week, (dialog, day) -> {
+        Calendar today = Calendar.getInstance();
+
+        long minDate = today.getTimeInMillis();
+
+        Calendar maxCalendar = Calendar.getInstance();
+        maxCalendar.add(Calendar.DAY_OF_YEAR, 6);
+        long maxDate = maxCalendar.getTimeInMillis();
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                getContext(),
+                (view, year, month, dayOfMonth) -> {
+
+                    Calendar selectedDate = Calendar.getInstance();
+                    selectedDate.set(year, month, dayOfMonth);
+
+                    SimpleDateFormat sdf =
+                            new SimpleDateFormat("EEEE, dd MMM yyyy", Locale.getDefault());
+
+                    String formattedDate = sdf.format(selectedDate.getTime());
+
                     MealPlan plan = new MealPlan(
                             meal.getId(),
-                            week[day],
+                            formattedDate,
                             meal.getName(),
                             meal.getImageUrl(),
                             meal.getArea(),
-                            categoryName);
+                            categoryName
+                    );
+
                     presenter.addToPlan(plan);
-                    Toast.makeText(getContext(), "Added to plan ", Toast.LENGTH_SHORT).show();
-                }).show();
+                    Toast.makeText(getContext(), "Added to plan", Toast.LENGTH_SHORT).show();
+                },
+                today.get(Calendar.YEAR),
+                today.get(Calendar.MONTH),
+                today.get(Calendar.DAY_OF_MONTH)
+        );
+
+        datePickerDialog.getDatePicker().setMinDate(minDate);
+        datePickerDialog.getDatePicker().setMaxDate(maxDate);
+
+        datePickerDialog.show();
     }
 
     @Override

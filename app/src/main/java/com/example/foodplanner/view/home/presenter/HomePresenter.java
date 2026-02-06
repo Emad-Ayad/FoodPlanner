@@ -7,6 +7,6 @@ public interface HomePresenter {
     void getMealOfTheDay();
     void getQuickMeals();
     void mealOnClickLinstener();
-    void addToPlan(MealPlan plan);
     void addToFav(Meal meal);
+    void removeFromFav(Meal meal);
 }

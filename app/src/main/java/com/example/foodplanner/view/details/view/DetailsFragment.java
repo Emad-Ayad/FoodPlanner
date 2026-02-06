@@ -1,9 +1,13 @@
 package com.example.foodplanner.view.details.view;
 
+import android.app.DatePickerDialog;
+import android.icu.text.SimpleDateFormat;
+import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,24 +25,26 @@ import com.bumptech.glide.Glide;
 import com.example.foodplanner.R;
 import com.example.foodplanner.data.model.MealDetail;
 import com.example.foodplanner.data.model.Meal;
+import com.example.foodplanner.data.model.MealPlan;
 import com.example.foodplanner.data.firebase.AuthManger;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DetailsFragment extends Fragment implements DetailsView {
 
     private DetailsPresenter presenter;
-    private ImageView mealImage;
+    private ImageView mealImage,addToFavBtn;
     private TextView mealName, mealArea, mealCategory, instructionsText;
 
     private YouTubePlayerView youtubePlayerView;
     private IngredientsAdapter ingredientsAdapter;
     private RecyclerView rvIngredients;
-    private ImageView addToFavBtn;
+    private Button addToPlan;
     private boolean isFav = false;
     private Meal currentMeal;
 
@@ -77,6 +83,7 @@ public class DetailsFragment extends Fragment implements DetailsView {
         youtubePlayerView = view.findViewById(R.id.youtubePlayer);
         rvIngredients = view.findViewById(R.id.rvIngredients);
         addToFavBtn = view.findViewById(R.id.addToFavBtn);
+        addToPlan = view.findViewById(R.id.btnAddToPlan);
         rvIngredients.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         ingredientsAdapter = new IngredientsAdapter(getContext());
         rvIngredients.setAdapter(ingredientsAdapter);
@@ -114,6 +121,15 @@ public class DetailsFragment extends Fragment implements DetailsView {
                 } else {
                     presenter.addToFav(currentMeal);
                 }
+            });
+        }
+
+        if (isGuest) {
+            addToPlan.setVisibility(View.GONE);
+        } else {
+            addToPlan.setVisibility(View.VISIBLE);
+            addToPlan.setOnClickListener(v -> {
+                showWeekDatePicker(currentMeal);
             });
         }
     }
@@ -167,6 +183,49 @@ public class DetailsFragment extends Fragment implements DetailsView {
     @Override
     public void showErrorMessage(String error) {
         Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
+    }
+
+    private void showWeekDatePicker(Meal meal) {
+        Calendar today = Calendar.getInstance();
+
+        long minDate = today.getTimeInMillis();
+
+        Calendar maxCalendar = Calendar.getInstance();
+        maxCalendar.add(Calendar.DAY_OF_YEAR, 6);
+        long maxDate = maxCalendar.getTimeInMillis();
+
+        DatePickerDialog dialog = new DatePickerDialog(
+                getContext(),
+                (view, year, month, dayOfMonth) -> {
+
+                    Calendar selected = Calendar.getInstance();
+                    selected.set(year, month, dayOfMonth);
+
+                    SimpleDateFormat sdf =
+                            new SimpleDateFormat("EEEE, dd MMM yyyy", Locale.getDefault());
+
+                    String formattedDate = sdf.format(selected.getTime());
+
+                    MealPlan plan = new MealPlan(
+                            meal.getId(),
+                            formattedDate,
+                            meal.getName(),
+                            meal.getImageUrl(),
+                            meal.getArea(),
+                            ""
+                    );
+
+                    presenter.addToPlan(plan);
+                    Toast.makeText(getContext(), "Added to plan", Toast.LENGTH_SHORT).show();
+                },
+                today.get(Calendar.YEAR),
+                today.get(Calendar.MONTH),
+                today.get(Calendar.DAY_OF_MONTH)
+        );
+
+        dialog.getDatePicker().setMinDate(minDate);
+        dialog.getDatePicker().setMaxDate(maxDate);
+        dialog.show();
     }
 
 }

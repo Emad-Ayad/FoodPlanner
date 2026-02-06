@@ -22,7 +22,7 @@ import com.example.foodplanner.data.firebase.AuthManger;
 
 import java.util.List;
 
-public class FavoriteFragment extends Fragment implements FavoriteView {
+public class FavoriteFragment extends Fragment implements FavoriteView { //TODO confirm negative
 
     private RecyclerView rvFavorites;
     private TextView guestMessage;

@@ -23,12 +23,21 @@ public class Meal {
     @SerializedName("strMealThumb")
     @ColumnInfo(name = "imageUrl")
     private String imageUrl;
+    private boolean isFav = false;
 
     public Meal(@NonNull String id, String name, String area, String imageUrl) {
         this.id = id;
         this.name = name;
         this.area = area;
         this.imageUrl = imageUrl;
+    }
+
+    public boolean isFav() {
+        return isFav;
+    }
+
+    public void setFav(boolean fav) {
+        isFav = fav;
     }
 
     public String getId() {

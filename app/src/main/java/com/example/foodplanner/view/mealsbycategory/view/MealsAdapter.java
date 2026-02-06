@@ -68,17 +68,9 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
         });
 
         if (isGuest) {
-            holder.addToPlanBtn.setVisibility(View.GONE);
             holder.addToFavBtn.setVisibility(View.GONE);
         } else {
-            holder.addToPlanBtn.setVisibility(View.VISIBLE);
             holder.addToFavBtn.setVisibility(View.VISIBLE);
-
-            holder.addToPlanBtn.setOnClickListener(v -> {
-                if (planListener != null) {
-                    planListener.onPlanClick(meals.get(position));
-                }
-            });
 
             holder.addToFavBtn.setOnClickListener(v -> {
                 if (favListener != null) {
@@ -96,14 +88,12 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
     class MealViewHolder extends RecyclerView.ViewHolder {
         private ImageView mealImage;
         private TextView mealName;
-        private ImageView addToPlanBtn;
         private ImageView addToFavBtn;
 
         public MealViewHolder(@NonNull View itemView) {
             super(itemView);
             mealImage = itemView.findViewById(R.id.mealImage);
             mealName = itemView.findViewById(R.id.mealName);
-            addToPlanBtn = itemView.findViewById(R.id.addToPlanBtn);
             addToFavBtn = itemView.findViewById(R.id.addToFavBtn);
         }
     }

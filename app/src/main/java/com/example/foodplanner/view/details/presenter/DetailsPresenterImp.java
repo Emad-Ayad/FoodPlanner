@@ -5,9 +5,13 @@ import android.content.Context;
 import com.example.foodplanner.data.datasource.remote.MealDetailNetworkResponse;
 import com.example.foodplanner.data.datasource.remote.MealsRemoteDataSource;
 import com.example.foodplanner.data.model.Meal;
+import com.example.foodplanner.data.model.MealPlan;
 import com.example.foodplanner.view.details.view.DetailsView;
 import com.example.foodplanner.data.model.MealDetail;
 import com.example.foodplanner.data.repo.MealsRepo;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class DetailsPresenterImp implements DetailsPresenter   {
 
@@ -49,6 +53,16 @@ public class DetailsPresenterImp implements DetailsPresenter   {
                         () -> view.showFavAdded(),
                         e -> view.showErrorMessage(e.getMessage())
                 );
+    }
+
+    @Override
+    public void addToPlan(MealPlan plan) {
+        repo.insertMealPlan(plan)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        () -> {},
+                        error -> view.showErrorMessage(error.getMessage()));
     }
 
     @Override
