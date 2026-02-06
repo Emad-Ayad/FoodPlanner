@@ -77,8 +77,6 @@ public class MealsByCategoryFragment extends Fragment implements MealsByCategory
                 } else {
                     presenter.removeFromFav(meal);
                 }
-                Toast.makeText(getContext(), "Added to Fav ", Toast.LENGTH_SHORT).show();
-
             }, isGuest);
         }
         rvMeals.setAdapter(mealsAdapter);

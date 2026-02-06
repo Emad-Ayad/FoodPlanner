@@ -56,13 +56,16 @@ public class HomeFragment extends Fragment implements HomeView {
         AuthManger authManger = new AuthManger();
         boolean isGuest = authManger.isGuest(getContext());
 
+        if (isGuest){
+            addToFav.setVisibility(View.GONE);
+        }
+
         adapter = new HomeAdapter(meal -> {
             if (meal.isFav()) {
                 presenter.addToFav(meal);
             } else {
                 presenter.removeFromFav(meal);
             }
-            Snackbar.make(view, "Added to Fav", Snackbar.LENGTH_SHORT).show();
 
         }, isGuest);
         recyclerView.setAdapter(adapter);

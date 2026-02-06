@@ -216,7 +216,6 @@ public class DetailsFragment extends Fragment implements DetailsView {
                     );
 
                     presenter.addToPlan(plan);
-                    Toast.makeText(getContext(), "Added to plan", Toast.LENGTH_SHORT).show();
                 },
                 today.get(Calendar.YEAR),
                 today.get(Calendar.MONTH),

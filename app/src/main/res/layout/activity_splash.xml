@@ -9,7 +9,7 @@
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lottieAnimationView"
-        android:layout_width="300dp"
+        android:layout_width="250dp"
         android:layout_height="300dp"
         android:layout_marginTop="148dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -28,6 +28,12 @@
         android:textColor="@color/primary_orange"
         android:textSize="48sp"
         android:textStyle="bold|italic"
+        android:letterSpacing="0.05"
+        android:shadowColor="@color/black"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="4"
+        android:fontFamily="@font/pacifico"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lottieAnimationView" />
