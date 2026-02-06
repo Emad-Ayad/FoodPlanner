@@ -17,7 +17,8 @@ public interface SearchPresenter {
     void getAreas();
 
     void getIngredients();
-    void addToPlan(MealPlan plan);
     void addToFav(Meal meal);
+    void removeFromFav(Meal meal);
+
 
 }

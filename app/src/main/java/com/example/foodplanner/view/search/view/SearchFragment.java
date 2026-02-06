@@ -85,9 +85,11 @@ public class SearchFragment extends Fragment implements SearchedView,
         boolean isGuest = authManger.isGuest(getContext());
 
         adapter = new SearchAdapter(this.getContext(), meal -> {
-            showDayPickerDialog(meal);
-        }, meal -> {
-            presenter.addToFav(meal);
+            if (meal.isFav()) {
+                presenter.addToFav(meal);
+            } else {
+                presenter.removeFromFav(meal);
+            }
             Toast.makeText(getContext(), "Added to Fav ", Toast.LENGTH_SHORT).show();
 
         }, isGuest);
@@ -166,23 +168,6 @@ public class SearchFragment extends Fragment implements SearchedView,
         });
 
         setupChipListeners();
-    }
-
-    private void showDayPickerDialog(Meal meal) {
-        String[] week = { "Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" };
-        new AlertDialog.Builder(getContext())
-                .setTitle("Choose a day")
-                .setItems(week, (dialog, day) -> {
-                    MealPlan plan = new MealPlan(
-                            meal.getId(),
-                            week[day],
-                            meal.getName(),
-                            meal.getImageUrl(),
-                            meal.getArea(),
-                            "category");
-                    presenter.addToPlan(plan);
-                    Toast.makeText(getContext(), "Added to plan ", Toast.LENGTH_SHORT).show();
-                }).show();
     }
 
     private void setupChipListeners() {

@@ -24,22 +24,14 @@
         private List<Meal> meals = new ArrayList<>();
         private Context context;
         private boolean isGuest = false;
-
-        private OnPlanClickListener planListener;
         private OnFavClickListener favListener;
-
-        public interface OnPlanClickListener {
-            void onPlanClick(Meal meal);
-        }
 
         public interface OnFavClickListener {
             void onFavClick(Meal meal);
         }
 
-        public SearchAdapter(Context context, OnPlanClickListener planListener, OnFavClickListener favListener,
-                boolean isGuest) {
+        public SearchAdapter(Context context, OnFavClickListener favListener,boolean isGuest) {
             this.context = context;
-            this.planListener = planListener;
             this.favListener = favListener;
             this.isGuest = isGuest;
         }
@@ -59,11 +51,12 @@
 
         @Override
         public void onBindViewHolder(@NonNull SearchViewHolder holder, int position) {
+            Meal meal = meals.get(position);
             holder.mealName.setText(meals.get(position).getName());
             Glide.with(context).load(meals.get(position).getImageUrl()).into(holder.mealImage);
 
+            holder.bind(meal);
             holder.itemView.setOnClickListener(v -> {
-                Meal meal = meals.get(position);
                 NavDirections action = SearchFragmentDirections.actionSearchFragmentToDetailsFragment(meal.getId());
 
                 Navigation.findNavController(v).navigate(action);
@@ -75,9 +68,15 @@
                 holder.addToFavBtn.setVisibility(View.VISIBLE);
 
                 holder.addToFavBtn.setOnClickListener(v -> {
-                    if (favListener != null) {
-                        favListener.onFavClick(meals.get(position));
+                    if (meal.isFav()) {
+                        meal.setFav(false);
+                        favListener.onFavClick(meal);
+                    } else {
+                        meal.setFav(true);
+                        favListener.onFavClick(meal);
                     }
+
+                    notifyItemChanged(position);
                 });
             }
         }
@@ -97,6 +96,16 @@
                 mealImage = itemView.findViewById(R.id.mealImage);
                 mealName = itemView.findViewById(R.id.mealName);
                 addToFavBtn = itemView.findViewById(R.id.addToFavBtn);
+            }
+
+            public void bind(Meal meal) {
+                mealName.setText(meal.getName());
+                addToFavBtn.setImageResource(
+                        meal.isFav()
+                                ? R.drawable.baseline_favorite_24
+                                : R.drawable.baseline_favorite_border_24
+                );
+
             }
         }
 

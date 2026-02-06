@@ -23,7 +23,6 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class SearchPresenterImp implements SearchPresenter {
 
     private MealsRemoteDataSource remoteDataSource;
-
     private SearchedView view;
     private MealsRepo repo;
 
@@ -39,7 +38,21 @@ public class SearchPresenterImp implements SearchPresenter {
         remoteDataSource.searchMeals(search, new MealsNetworkResponse() {
             @Override
             public void onSuccess(List<Meal> meals) {
-                view.showMeals(meals);
+                repo.getFavMeals()
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(favMeals -> {
+
+                            for (Meal meal : meals) {
+                                for (Meal fav : favMeals) {
+                                    if (meal.getId().equals(fav.getId())) {
+                                        meal.setFav(true);
+                                        break;
+                                    }
+                                }
+                            }
+
+                            view.showMeals(meals);
+                        }, e -> view.showError(e.getMessage()));
             }
 
             @Override
@@ -59,7 +72,21 @@ public class SearchPresenterImp implements SearchPresenter {
         remoteDataSource.getMealsByArea(area, new MealsNetworkResponse() {
             @Override
             public void onSuccess(List<Meal> meals) {
-                view.showMeals(meals);
+                repo.getFavMeals()
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(favMeals -> {
+
+                            for (Meal meal : meals) {
+                                for (Meal fav : favMeals) {
+                                    if (meal.getId().equals(fav.getId())) {
+                                        meal.setFav(true);
+                                        break;
+                                    }
+                                }
+                            }
+
+                            view.showMeals(meals);
+                        }, e -> view.showError(e.getMessage()));
             }
 
             @Override
@@ -79,7 +106,21 @@ public class SearchPresenterImp implements SearchPresenter {
         remoteDataSource.getMealsByIngredient(ingredient, new MealsNetworkResponse() {
             @Override
             public void onSuccess(List<Meal> meals) {
-                view.showMeals(meals);
+                repo.getFavMeals()
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(favMeals -> {
+
+                            for (Meal meal : meals) {
+                                for (Meal fav : favMeals) {
+                                    if (meal.getId().equals(fav.getId())) {
+                                        meal.setFav(true);
+                                        break;
+                                    }
+                                }
+                            }
+
+                            view.showMeals(meals);
+                        }, e -> view.showError(e.getMessage()));
             }
 
             @Override
@@ -99,7 +140,21 @@ public class SearchPresenterImp implements SearchPresenter {
         remoteDataSource.getMealsByCategory(category, new MealsNetworkResponse() {
             @Override
             public void onSuccess(List<Meal> meals) {
-                view.showMeals(meals);
+                repo.getFavMeals()
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(favMeals -> {
+
+                            for (Meal meal : meals) {
+                                for (Meal fav : favMeals) {
+                                    if (meal.getId().equals(fav.getId())) {
+                                        meal.setFav(true);
+                                        break;
+                                    }
+                                }
+                            }
+
+                            view.showMeals(meals);
+                        }, e -> view.showError(e.getMessage()));
             }
 
             @Override
@@ -175,8 +230,8 @@ public class SearchPresenterImp implements SearchPresenter {
     }
 
     @Override
-    public void addToPlan(MealPlan plan) {
-        repo.insertMealPlan(plan)
+    public void addToFav(Meal meal) {
+        repo.insertFavMeal(meal)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -185,12 +240,11 @@ public class SearchPresenterImp implements SearchPresenter {
     }
 
     @Override
-    public void addToFav(Meal meal) {
-        repo.insertFavMeal(meal)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+    public void removeFromFav(Meal meal) {
+        repo.deleteFavMeal(meal)
                 .subscribe(
                         () -> {},
-                        error -> view.showError(error.getMessage()));
+                        e -> view.showError(e.getMessage())
+                );
     }
 }
