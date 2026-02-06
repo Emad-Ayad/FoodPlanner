@@ -6,7 +6,8 @@ import com.example.foodplanner.data.model.MealPlan;
 public interface MealsByCategoryPresenter {
     void getMealsByCategory(String category);
 
-    void addToPlan(MealPlan plan);
     void addToFav(Meal meal);
+    void removeFromFav(Meal meal);
+
 
 }

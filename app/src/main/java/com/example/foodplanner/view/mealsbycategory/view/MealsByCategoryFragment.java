@@ -72,9 +72,11 @@ public class MealsByCategoryFragment extends Fragment implements MealsByCategory
             boolean isGuest = authManger.isGuest(getContext());
 
             mealsAdapter = new MealsAdapter(this.getContext(), meal -> {
-                showDayPickerDialog(meal);
-            }, meal -> {
-                presenter.addToFav(meal);
+                if (meal.isFav()) {
+                    presenter.addToFav(meal);
+                } else {
+                    presenter.removeFromFav(meal);
+                }
                 Toast.makeText(getContext(), "Added to Fav ", Toast.LENGTH_SHORT).show();
 
             }, isGuest);
@@ -86,49 +88,6 @@ public class MealsByCategoryFragment extends Fragment implements MealsByCategory
         presenter.getMealsByCategory(categoryName);
     }
 
-    private void showDayPickerDialog(Meal meal) {
-        Calendar today = Calendar.getInstance();
-
-        long minDate = today.getTimeInMillis();
-
-        Calendar maxCalendar = Calendar.getInstance();
-        maxCalendar.add(Calendar.DAY_OF_YEAR, 6);
-        long maxDate = maxCalendar.getTimeInMillis();
-
-        DatePickerDialog datePickerDialog = new DatePickerDialog(
-                getContext(),
-                (view, year, month, dayOfMonth) -> {
-
-                    Calendar selectedDate = Calendar.getInstance();
-                    selectedDate.set(year, month, dayOfMonth);
-
-                    SimpleDateFormat sdf =
-                            new SimpleDateFormat("EEEE, dd MMM yyyy", Locale.getDefault());
-
-                    String formattedDate = sdf.format(selectedDate.getTime());
-
-                    MealPlan plan = new MealPlan(
-                            meal.getId(),
-                            formattedDate,
-                            meal.getName(),
-                            meal.getImageUrl(),
-                            meal.getArea(),
-                            categoryName
-                    );
-
-                    presenter.addToPlan(plan);
-                    Toast.makeText(getContext(), "Added to plan", Toast.LENGTH_SHORT).show();
-                },
-                today.get(Calendar.YEAR),
-                today.get(Calendar.MONTH),
-                today.get(Calendar.DAY_OF_MONTH)
-        );
-
-        datePickerDialog.getDatePicker().setMinDate(minDate);
-        datePickerDialog.getDatePicker().setMaxDate(maxDate);
-
-        datePickerDialog.show();
-    }
 
     @Override
     public void showMeals(List<Meal> meals) {

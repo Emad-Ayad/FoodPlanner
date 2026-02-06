@@ -26,15 +26,6 @@ public class MealsByCategoryPresenterImp implements MealsByCategoryPresenter {
         this.repo = new MealsRepo(context);
     }
 
-    @Override
-    public void addToPlan(MealPlan plan) {
-        repo.insertMealPlan(plan)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        () -> {},
-                        error -> view.showError(error.getMessage()));
-    }
 
     @Override
     public void addToFav(Meal meal) {
@@ -47,11 +38,34 @@ public class MealsByCategoryPresenterImp implements MealsByCategoryPresenter {
     }
 
     @Override
+    public void removeFromFav(Meal meal) {
+        repo.deleteFavMeal(meal)
+                .subscribe(
+                        () -> {},
+                        e -> view.showError(e.getMessage())
+                );
+    }
+
+    @Override
     public void getMealsByCategory(String category) {
         remoteDataSource.getMealsByCategory(category, new MealsNetworkResponse() {
             @Override
             public void onSuccess(List<Meal> meals) {
-                view.showMeals(meals);
+                repo.getFavMeals()
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(favMeals -> {
+
+                            for (Meal meal : meals) {
+                                for (Meal fav : favMeals) {
+                                    if (meal.getId().equals(fav.getId())) {
+                                        meal.setFav(true);
+                                        break;
+                                    }
+                                }
+                            }
+
+                            view.showMeals(meals);
+                        }, e -> view.showError(e.getMessage()));
             }
 
             @Override
