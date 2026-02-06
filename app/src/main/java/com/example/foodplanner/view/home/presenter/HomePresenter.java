@@ -9,4 +9,6 @@ public interface HomePresenter {
     void mealOnClickLinstener();
     void addToFav(Meal meal);
     void removeFromFav(Meal meal);
+    void onMealOfTheDayFavClicked();
+
 }

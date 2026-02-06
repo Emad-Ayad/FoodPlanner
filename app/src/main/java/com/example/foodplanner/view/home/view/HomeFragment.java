@@ -29,7 +29,7 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.List;
 
 public class HomeFragment extends Fragment implements HomeView {
-    private ImageView mealImage;
+    private ImageView mealImage , addToFav;
     private TextView mealTitle, mealCountry;
     private RecyclerView recyclerView;
     private HomeAdapter adapter;
@@ -50,6 +50,8 @@ public class HomeFragment extends Fragment implements HomeView {
         mealImage = view.findViewById(R.id.mealImage);
         mealTitle = view.findViewById(R.id.mealTitle);
         mealCountry = view.findViewById(R.id.mealCountry);
+        addToFav = view.findViewById(R.id.addToFavBtn);
+
 
         AuthManger authManger = new AuthManger();
         boolean isGuest = authManger.isGuest(getContext());
@@ -70,6 +72,10 @@ public class HomeFragment extends Fragment implements HomeView {
             presenter.mealOnClickLinstener();
         });
 
+        addToFav.setOnClickListener(v -> {
+            presenter.onMealOfTheDayFavClicked();
+        });
+
         presenter.getMealOfTheDay();
         presenter.getQuickMeals();
 
@@ -83,6 +89,8 @@ public class HomeFragment extends Fragment implements HomeView {
                 .load(meal.getImageUrl())
                 .centerCrop()
                 .into(mealImage);
+
+        updateFavIcon(meal.isFav());
 
     }
 
@@ -105,5 +113,14 @@ public class HomeFragment extends Fragment implements HomeView {
     @Override
     public void showInternetError(String message) {
         Snackbar.make(requireView(), message, Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void updateFavIcon(boolean isFav) {
+        if (isFav) {
+            addToFav.setImageResource(R.drawable.baseline_favorite_24);
+        } else {
+            addToFav.setImageResource(R.drawable.baseline_favorite_border_24);
+        }
     }
 }

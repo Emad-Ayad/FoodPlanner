@@ -108,7 +108,25 @@ public class HomePresenterImp implements HomePresenter {
                 );
     }
 
+    @Override
+    public void onMealOfTheDayFavClicked() {
 
+        if (meal.isFav()) {
+            meal.setFav(false);
+            repo.deleteFavMeal(meal)
+                    .subscribe(
+                            () -> view.updateFavIcon(false),
+                            e -> view.showError(e.getMessage())
+                    );
+        } else {
+            meal.setFav(true);
+            repo.insertFavMeal(meal)
+                    .subscribe(
+                            () -> view.updateFavIcon(true),
+                            e -> view.showError(e.getMessage())
+                    );
+        }
+    }
 
 
 }

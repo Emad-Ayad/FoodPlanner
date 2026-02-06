@@ -10,4 +10,6 @@ public interface HomeView {
     void navToMealDetails(String mealId);
     void showError(String message);
     void showInternetError(String message);
+    void updateFavIcon(boolean isFav);
+
 }
