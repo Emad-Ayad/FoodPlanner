@@ -1,5 +1,6 @@
 package com.example.foodplanner.view.planer;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -61,7 +62,7 @@ public class PlannerFragment extends Fragment implements PlannerView {
             rvPlan.setVisibility(View.VISIBLE);
 
             adapter = new PlannerAdapter(getContext(), plan -> {
-                presenter.removeFromPlan(plan);
+                showDeleteConfirmation(plan);
             });
             rvPlan.setAdapter(adapter);
 
@@ -78,5 +79,16 @@ public class PlannerFragment extends Fragment implements PlannerView {
     @Override
     public void showError(String message) {
         android.widget.Toast.makeText(getContext(), message, android.widget.Toast.LENGTH_SHORT).show();
+    }
+
+    private void showDeleteConfirmation(MealPlan plan){
+        new AlertDialog.Builder(requireContext())
+                .setTitle("Remove meal?")
+                .setMessage("Are you sure you want to remove this meal from your plan?")
+                .setPositiveButton("Remove", (dialog, which) -> {
+                    presenter.removeFromPlan(plan);
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
+                .show();
     }
 }

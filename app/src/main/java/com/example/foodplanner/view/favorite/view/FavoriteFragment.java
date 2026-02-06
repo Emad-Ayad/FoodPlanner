@@ -1,5 +1,6 @@
 package com.example.foodplanner.view.favorite.view;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.foodplanner.R;
 import com.example.foodplanner.data.model.Meal;
+import com.example.foodplanner.data.model.MealPlan;
 import com.example.foodplanner.view.favorite.presenter.FavoritePresenter;
 import com.example.foodplanner.view.favorite.presenter.FavoritePresenterImp;
 import com.example.foodplanner.data.firebase.AuthManger;
@@ -65,8 +67,7 @@ public class FavoriteFragment extends Fragment implements FavoriteView { //TODO 
             rvFavorites.setVisibility(View.VISIBLE);
 
             adapter = new FavoriteAdapter(getContext(), meal -> {
-                presenter.removeFromFavorites(meal);
-                Toast.makeText(getContext(), "Removed from favorites", Toast.LENGTH_SHORT).show();
+                showDeleteConfirmation(meal);
             });
             rvFavorites.setAdapter(adapter);
 
@@ -84,5 +85,16 @@ public class FavoriteFragment extends Fragment implements FavoriteView { //TODO 
     @Override
     public void showError(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    private void showDeleteConfirmation(Meal meal){
+        new AlertDialog.Builder(requireContext())
+                .setTitle("Remove meal?")
+                .setMessage("Are you sure you want to remove this meal from your Favourite?")
+                .setPositiveButton("Remove", (dialog, which) -> {
+                    presenter.removeFromFavorites(meal);
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
+                .show();
     }
 }
